@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowLeft, Star, ShoppingCart } from "lucide-react";
@@ -7,7 +7,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import PopupForm from "../components/PopupForm2"; // Import the form component
 import Related from "../Home/Related";
 
-export default function ProductList() {
+function ProductListInner() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -913,6 +913,20 @@ export default function ProductList() {
         categoryContent={currentCategoryContent}
       />
     </div>
+  );
+}
+
+export default function ProductList() {
+  return (
+    <Suspense
+      fallback={
+        <div className="flex justify-center items-center h-64">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
+        </div>
+      }
+    >
+      <ProductListInner />
+    </Suspense>
   );
 }
 
