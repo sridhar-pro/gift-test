@@ -61,7 +61,7 @@ export default function CategoryCr() {
         }
 
         const data = await response.json();
-        console.log("data", data);
+        // console.log("data", data);
         setCategories(Array.isArray(data?.data) ? data.data : []);
       } catch (error) {
         console.error("Error fetching categories:", error);

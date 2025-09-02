@@ -26,9 +26,9 @@ function ProductListInner() {
     }
     return {};
   });
-  useEffect(() => {
-    console.log("Saved Variants:", savedVariants);
-  }, [savedVariants]);
+  // useEffect(() => {
+  //   console.log("Saved Variants:", savedVariants);
+  // }, [savedVariants]);
 
   // Flatten all product images into a single gallery array
   // Compute all images based on current products
@@ -101,7 +101,7 @@ function ProductListInner() {
         "Festive & Thoughtful – Designed to spread joy during Diwali and beyond.",
         "Impact-Driven – Every purchase supports women artisans and small businesses.",
       ],
-      price: 80000, // ₹600 in paise for Razorpay
+      price: 79000, // ₹600 in paise for Razorpay
     },
     889: {
       name: "Mini Treasures",
@@ -154,69 +154,77 @@ function ProductListInner() {
     // Products for different categories
     888: [
       {
-        id: 1,
+        id: 0,
         name: "Premium Coffee Mug",
         description: "Elegant ceramic coffee mug with premium finish",
         price: "₹1,499",
         rating: 4.8,
-        image: "/product-list/coffee mug.png",
+        image: "/product-list/def1.png",
       },
       {
-        id: 11,
-        name: "Gourmet Coffee Hamper",
-        description: "Selection of finest coffee beans and accessories",
-        price: "₹2,299",
-        rating: 4.7,
-        image: "/Copy of ecomug1r.png",
+        id: 1,
+        name: "Premium Coffee Mug - black",
+        description: "Elegant ceramic coffee mug with premium finish",
+        price: "₹1,499",
+        rating: 4.8,
+        image: "/product-list/coffeemugblack.png",
       },
-      {
-        id: 4,
-        name: "Gourmet Coffee Hamper",
-        description: "Selection of finest coffee beans and accessories",
-        price: "₹2,299",
-        rating: 4.7,
-        image: "/product-list/14.jpg",
-      },
-      {
-        id: 5,
-        name: "Gourmet Coffee Hamper",
-        description: "Selection of finest coffee beans and accessories",
-        price: "₹2,299",
-        rating: 4.7,
-        image: "/product-list/13.jpg",
-      },
-      {
-        id: 6,
-        name: "Gourmet Coffee Hamper",
-        description: "Selection of finest coffee beans and accessories",
-        price: "₹2,299",
-        rating: 4.7,
-        image: "/product-list/12.jpg",
-      },
-      {
-        id: 7,
-        name: "Gourmet Coffee Hamper",
-        description: "Selection of finest coffee beans and accessories",
-        price: "₹2,299",
-        rating: 4.7,
-        image: "/product-list/11.jpg",
-      },
-      {
-        id: 8,
-        name: "Gourmet Coffee Hamper",
-        description: "Selection of finest coffee beans and accessories",
-        price: "₹2,299",
-        rating: 4.7,
-        image: "/product-list/10.jpg",
-      },
-      {
-        id: 9,
-        name: "Gourmet Coffee Hamper",
-        description: "Selection of finest coffee beans and accessories",
-        price: "₹2,299",
-        rating: 4.7,
-        image: "/product-list/9.jpg",
-      },
+      // {
+      //   id: 11,
+      //   name: "Premium Coffee Mug - sandal",
+      //   description: "Selection of finest coffee beans and accessories",
+      //   price: "₹2,299",
+      //   rating: 4.7,
+      //   image: "/product-list/coffeemugsandal.png",
+      // },
+      // {
+      //   id: 4,
+      //   name: "Gourmet Coffee Hamper",
+      //   description: "Selection of finest coffee beans and accessories",
+      //   price: "₹2,299",
+      //   rating: 4.7,
+      //   image: "/product-list/14.jpg",
+      // },
+      // {
+      //   id: 5,
+      //   name: "Gourmet Coffee Hamper",
+      //   description: "Selection of finest coffee beans and accessories",
+      //   price: "₹2,299",
+      //   rating: 4.7,
+      //   image: "/product-list/13.jpg",
+      // },
+      // {
+      //   id: 6,
+      //   name: "Gourmet Coffee Hamper",
+      //   description: "Selection of finest coffee beans and accessories",
+      //   price: "₹2,299",
+      //   rating: 4.7,
+      //   image: "/product-list/12.jpg",
+      // },
+      // {
+      //   id: 7,
+      //   name: "Gourmet Coffee Hamper",
+      //   description: "Selection of finest coffee beans and accessories",
+      //   price: "₹2,299",
+      //   rating: 4.7,
+      //   image: "/product-list/11.jpg",
+      // },
+      // {
+      //   id: 8,
+      //   name: "Gourmet Coffee Hamper",
+      //   description: "Selection of finest coffee beans and accessories",
+      //   price: "₹2,299",
+      //   rating: 4.7,
+      //   image: "/product-list/10.jpg",
+      // },
+      // {
+      //   id: 9,
+      //   name: "Gourmet Coffee Hamper",
+      //   description: "Selection of finest coffee beans and accessories",
+      //   price: "₹2,299",
+      //   rating: 4.7,
+      //   image: "/product-list/9.jpg",
+      // },
       {
         id: 10,
         name: "Gourmet Coffee Hamper",
@@ -239,10 +247,18 @@ function ProductListInner() {
         description: "Selection of finest coffee beans and accessories",
         price: "₹2,299",
         rating: 4.7,
-        image: "/product-list/nuts.png",
+        image: "/product-list/mixednuts.png",
       },
     ],
     890: [
+      {
+        id: 3,
+        name: "Premium Coffee Mug",
+        description: "Elegant ceramic coffee mug with premium finish",
+        price: "₹1,499",
+        rating: 4.8,
+        image: "/product-list/def4.jpg",
+      },
       {
         id: 1,
         name: "Artisanal Tea Collection",
@@ -283,8 +299,24 @@ function ProductListInner() {
         rating: 4.7,
         image: "/product-list/15.jpg",
       },
+      {
+        id: 16,
+        name: "Mixed Dry Fruits 100gm",
+        description: "Selection of finest coffee beans and accessories",
+        price: "₹2,299",
+        rating: 4.7,
+        image: "/product-list/mixednuts.png",
+      },
     ],
     891: [
+      {
+        id: 0,
+        name: "Premium Coffee Mug",
+        description: "Elegant ceramic coffee mug with premium finish",
+        price: "₹1,499",
+        rating: 4.8,
+        image: "/product-list/def3.png",
+      },
       {
         id: 1,
         name: "Wine & Cheese Set",
@@ -302,15 +334,23 @@ function ProductListInner() {
         image: "/gratitude/ganesha fridge magnet_r.png",
       },
       {
-        id: 3,
-        name: "Wine & Cheese Set",
-        description: "Fine wine paired with artisan cheeses",
-        price: "₹4,299",
-        rating: 4.8,
-        image: "/product-list/nuts.png",
+        id: 16,
+        name: "Mixed Dry Fruits 100gm",
+        description: "Selection of finest coffee beans and accessories",
+        price: "₹2,299",
+        rating: 4.7,
+        image: "/product-list/mixednuts.png",
       },
     ],
     889: [
+      {
+        id: "0",
+        name: "Premium Coffee Mug",
+        description: "Elegant ceramic coffee mug with premium finish",
+        price: "₹1,499",
+        rating: 4.8,
+        image: "/product-list/def2.png",
+      },
       {
         id: 1,
         name: "Wine & Cheese Set",
@@ -337,6 +377,14 @@ function ProductListInner() {
       },
     ],
     896: [
+      {
+        id: 0,
+        name: "Wine & Cheese Set",
+        description: "Fine wine paired with artisan cheeses",
+        price: "₹4,299",
+        rating: 4.8,
+        image: "/product-list/def5.jpg",
+      },
       {
         id: 1,
         name: "Wine & Cheese Set",
@@ -391,6 +439,34 @@ function ProductListInner() {
     ],
   };
 
+  const categoryContentsMap = {
+    "Mini Treasures": [
+      "Brass Candle with Rich Velvet Pouch",
+      "Flavoured DipTea (3 sachets)",
+      "Almonds 50g",
+      "Cashews 50g",
+    ],
+    "Eco Luxe": [
+      "Wooden candle",
+      "Coffee Mug",
+      "Black Flask",
+      "Kalamkari Tray",
+      "Kalamkari Coaster",
+      "Mixed Dry Fruits 100gm",
+    ],
+    "Gratitude Box": [
+      "Metal Flower shape candle",
+      "Ganesh idol embellished Fridge Magnet",
+      "Mixed Dry Fruits 100gm",
+    ],
+    "Elite Desk Hamper": [
+      "Silk Fabric Cover notebook",
+      "Mixed Dry Fruits 100gm",
+      "Elegant Organiser",
+      "Handmade Flower-Shaped Candle",
+    ],
+  };
+
   useEffect(() => {
     const initializePage = () => {
       try {
@@ -428,33 +504,24 @@ function ProductListInner() {
     initializePage();
   }, [router, searchParams]);
 
+  const currentCategoryContent =
+    categoryContent[category?.id] || categoryContent["default"];
+
   useEffect(() => {
-    const queryCategoryId = searchParams.get("categoryId");
+    if (!currentCategoryContent?.name) return;
 
-    if (!queryCategoryId) return;
-
-    setCategory({
-      id: queryCategoryId,
-      name:
-        categoryContent[queryCategoryId]?.name ||
-        categoryContent["default"].name,
-    });
-
-    localStorage.setItem("selectedCategoryId", queryCategoryId);
-    setProducts(staticProducts[queryCategoryId] || staticProducts.default);
-    setActiveImg(
-      staticProducts[queryCategoryId]?.[0]?.images?.[0] ||
-        staticProducts[queryCategoryId]?.[0]?.image ||
-        null
-    );
-  }, [searchParams]);
+    const contents = categoryContentsMap[currentCategoryContent.name];
+    if (contents) {
+      localStorage.setItem("selectedContents", JSON.stringify(contents));
+    }
+  }, [currentCategoryContent?.name]);
 
   const handleBack = () => {
     router.back();
   };
 
   const handleAddToCart = (productId) => {
-    console.log("Added product to cart:", productId);
+    // console.log("Added product to cart:", productId);
     // Add your cart logic here
   };
 
@@ -471,9 +538,6 @@ function ProductListInner() {
       </div>
     );
   }
-
-  const currentCategoryContent =
-    categoryContent[category?.id] || categoryContent["default"];
 
   return (
     <div className="min-h-screen bg-gray-50 font-gift">
@@ -515,6 +579,11 @@ function ProductListInner() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* Left Side - Hero + Thumbnails */}
           <div className="flex flex-col gap-4">
+            <div className="flex md:hidden">
+              <h2 className="text-3xl font-bold text-[#A00030] mb-3">
+                {currentCategoryContent.title}
+              </h2>
+            </div>
             {/* Hero Image */}
             <motion.div
               key={activeImg}
@@ -554,40 +623,27 @@ function ProductListInner() {
               ))}
             </div>
 
-            {/* === New Section: Mini Treasures Contents === */}
-            {currentCategoryContent?.name === "Mini Treasures" && (
-              <div className="mt-4 mb-8">
-                <h3 className="font-semibold text-gray-800 mb-2">Contents:</h3>
-                <ul className="list-disc list-inside space-y-1 text-gray-700">
-                  <li>Brass Candle with Rich Velvet Pouch</li>
-                  <li>Flavoured DipTea (3 sachets)</li>
-                  <li>Almonds 50g</li>
-                  <li>Cashews 50g</li>
-                </ul>
+            <div className="flex md:hidden flex-col justify-start">
+              {/* Price Section */}
+              <div className="">
+                <p className="text-3xl font-bold text-[#a00300]">
+                  ₹ {(currentCategoryContent.price / 100).toFixed(2)}
+                </p>
+                <p className="text-sm text-gray-500 mt-1">
+                  (TAX included · FREE Shipping)
+                </p>
               </div>
-            )}
+            </div>
 
-            {/* === New Section: Gratitude Box Contents === */}
-            {currentCategoryContent?.name === "Gratitude Box" && (
+            {categoryContentsMap[currentCategoryContent?.name] && (
               <div className="mt-4 mb-8">
                 <h3 className="font-semibold text-gray-800 mb-2">Contents:</h3>
                 <ul className="list-disc list-inside space-y-1 text-gray-700">
-                  <li>Metal Flower shape candle</li>
-                  <li>Ganesh idol embellished Fridge Magnet</li>
-                  <li>Mixed Dry Fruits 100gm</li>
-                </ul>
-              </div>
-            )}
-
-            {/* === New Section: Elite Desk HamperContents === */}
-            {currentCategoryContent?.name === "Elite Desk Hamper" && (
-              <div className="mt-4 mb-8">
-                <h3 className="font-semibold text-gray-800 mb-2">Contents:</h3>
-                <ul className="list-disc list-inside space-y-1 text-gray-700">
-                  <li>Silk Fabric Cover notebook</li>
-                  <li>Mixed Dry Fruits 100gm</li>
-                  <li>Elegant Organiser</li>
-                  <li>Handmade Flower-Shaped Candle</li>
+                  {categoryContentsMap[currentCategoryContent.name].map(
+                    (item, idx) => (
+                      <li key={idx}>{item}</li>
+                    )
+                  )}
                 </ul>
               </div>
             )}
@@ -605,11 +661,11 @@ function ProductListInner() {
                       variants: [
                         {
                           name: "Premium Coffee Mug - Black",
-                          image: "/product-list/coffee mug.png",
+                          image: "/product-list/coffeemugblack.png",
                         },
                         {
                           name: "Premium Coffee Mug - Sandal",
-                          image: "/Copy of ecomug1r.png",
+                          image: "/product-list/coffeemugsandal.png",
                         },
                       ],
                     },
@@ -617,31 +673,31 @@ function ProductListInner() {
                       name: "Fabric Cover Notebook",
                       variants: [
                         {
-                          name: "Notebook Variant 1",
+                          name: "Bamboo Diary",
                           image: "/product-list/14.jpg",
                         },
                         {
-                          name: "Notebook Variant 2",
+                          name: "Blue Diary",
                           image: "/product-list/13.jpg",
                         },
                         {
-                          name: "Notebook Variant 3",
+                          name: "Cork and Red Diary",
                           image: "/product-list/12.jpg",
                         },
                         {
-                          name: "Notebook Variant 4",
+                          name: "Cork Diary",
                           image: "/product-list/11.jpg",
                         },
                         {
-                          name: "Notebook Variant 5",
+                          name: "Cork Fabric Diary",
                           image: "/product-list/10.jpg",
                         },
                         {
-                          name: "Notebook Variant 6",
+                          name: "Cork Visiting Card",
                           image: "/product-list/9.jpg",
                         },
                         {
-                          name: "Notebook Variant 7",
+                          name: "Kalamkari Notebook",
                           image: "/product-list/8.jpg",
                         },
                       ],
@@ -660,22 +716,30 @@ function ProductListInner() {
                       variants: [
                         {
                           name: "Mixed Dry Fruits 100gm",
-                          image: "/product-list/nuts.png",
+                          image: "/product-list/mixednuts.png",
                         },
                       ],
                     },
-                  ].map((item, idx) => (
-                    <button
-                      key={idx}
-                      onClick={() => setSelectedOption(item)}
-                      className="w-full text-left px-4 py-2 rounded-lg border border-gray-300 hover:bg-gray-50 transition"
-                    >
-                      {item.name}
-                      <span className="text-sm bg-[#a00300] text-white p-1 font-bold rounded-md ml-2">
-                        Change Option
-                      </span>
-                    </button>
-                  ))}
+                  ].map((item, idx) => {
+                    const selectedVariantName = savedVariants[item.name]; // get saved variant for this option
+                    return (
+                      <button
+                        key={idx}
+                        onClick={() => setSelectedOption(item)}
+                        className="w-full flex items-center justify-between px-4 py-2 rounded-lg border border-gray-300 hover:bg-gray-50 transition"
+                      >
+                        <span className="text-gray-800">
+                          {/* If variant is selected, show it; else show base option name */}
+                          {selectedVariantName || item.name}
+                        </span>
+
+                        {/* Always show "Change Option" */}
+                        <span className="text-sm bg-[#a00300] text-white p-1 font-bold rounded-md ml-2">
+                          Change Option
+                        </span>
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
             )}
@@ -761,7 +825,7 @@ function ProductListInner() {
                       <div className="mt-6 flex justify-end">
                         <button
                           onClick={() => {
-                            console.log("User selected:", selectedVariant);
+                            // console.log("User selected:", selectedVariant);
                             setSelectedOption(null); // close modal
                           }}
                           className="px-4 py-2 bg-[#a00300] text-white rounded-lg hover:bg-red-700 transition"
@@ -775,35 +839,19 @@ function ProductListInner() {
               )}
             </AnimatePresence>
 
-            <div className="flex md:hidden flex-col justify-start p-6">
-              {/* Title */}
-              <h2 className="text-3xl font-bold text-[#A00030] mb-3">
-                {currentCategoryContent.title}
-              </h2>
-
-              {/* Price Section */}
-              <div className="mb-6">
-                <p className="text-3xl font-bold text-gray-900">
-                  ₹ {(currentCategoryContent.price / 100).toFixed(2)}
-                </p>
-                <p className="text-sm text-gray-500 mt-1">
-                  (TAX included · FREE Shipping)
-                </p>
-              </div>
-              <div className="">
-                <PopupForm
-                  inline={true}
-                  product={selectedProduct}
-                  category={category}
-                  categoryContent={currentCategoryContent}
-                />
-              </div>
-            </div>
-
             {/* Description */}
-            <p className="text-gray-700 mb-4 text-justify">
+            <p className="text-gray-700  text-justify">
               {currentCategoryContent.description}
             </p>
+
+            <div className="flex md:hidden items-center justify-center">
+              <PopupForm
+                inline={true}
+                product={selectedProduct}
+                category={category}
+                categoryContent={currentCategoryContent}
+              />
+            </div>
 
             {/* Wrapper for Key Features + Static Images */}
             <div className="flex flex-col lg:flex-row lg:gap-6 border-t pt-4">

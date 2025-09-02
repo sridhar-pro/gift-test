@@ -48,13 +48,13 @@ const nextConfig = {
 
       {
         source: "/api/save_prebook_gift",
-        // destination: `${BASE_API}/save_prebook_gifts`,
-        destination: `https://marketplace.betalearnings.com/api/v1/Marketv2/save_prebook_gifts`,
+        destination: `${BASE_API}/save_prebook_gifts`,
+        // destination: `https://marketplace.betalearnings.com/api/v1/Marketv2/save_prebook_gifts`,
       },
       {
         source: "/api/prebook_gifts_payment",
-        // destination: `${BASE_API}/prebook_gifts_payment`,
-        destination: `https://marketplace.betalearnings.com/api/v1/Marketv2/prebook_gifts_payment`,
+        destination: `${BASE_API}/prebook_gifts_payment`,
+        // destination: `https://marketplace.betalearnings.com/api/v1/Marketv2/prebook_gifts_payment`,
       },
       {
         source: "/api/login",

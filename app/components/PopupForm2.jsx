@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import { X, FileText, Gift, CreditCard, CheckCircle } from "lucide-react";
 import toast, { Toaster } from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 const PopupForm = ({
   isOpen = false,
@@ -11,6 +12,7 @@ const PopupForm = ({
   categoryContent,
   inline = false,
 }) => {
+  const router = useRouter();
   const [formData, setFormData] = useState({
     name: "",
     phone: "",
@@ -79,7 +81,7 @@ const PopupForm = ({
       const amount = categoryContent?.price || 50000; // Use category price or default
 
       const options = {
-        key: "rzp_test_Gnu8neTnUU656M", // Your Razorpay key rzp_test_Gnu8neTnUU656M /rzp_live_lclCyKLWqjYCIJ
+        key: "rzp_live_lclCyKLWqjYCIJ", // Your Razorpay key rzp_test_Gnu8neTnUU656M /rzp_live_lclCyKLWqjYCIJ
         amount: amount.toString(), // Amount in paise
         currency: "INR",
         name: "Corporate Gifting",
@@ -151,7 +153,7 @@ const PopupForm = ({
       }
 
       const result = await response.json();
-      console.log("✅ Payment status updated:", result);
+      // console.log("✅ Payment status updated:", result);
       return result;
     } catch (error) {
       console.error("[Payment Update Error]:", error);
@@ -198,9 +200,12 @@ const PopupForm = ({
         prebookingType: formData.prebookingType,
         catalogue: formData.catalogue,
         price: categoryContent?.price / 100,
-        product_item: Object.values(
-          JSON.parse(localStorage.getItem("selectedVariants")) || {}
-        ).join(", "),
+        product_item: [
+          ...Object.values(
+            JSON.parse(localStorage.getItem("selectedVariants")) || {}
+          ),
+          ...(JSON.parse(localStorage.getItem("selectedContents")) || []),
+        ].join(", "),
       };
 
       // 3. Call our API proxy
@@ -225,7 +230,7 @@ const PopupForm = ({
       }
 
       const result = await response.json();
-      console.log("✅ Form submitted:", result);
+      // console.log("✅ Form submitted:", result);
 
       // Save the inserted ID for payment status update
       if (result.status && result.id) {
@@ -320,7 +325,10 @@ const PopupForm = ({
                   confirm your order details.
                 </p>
                 <button
-                  onClick={onClose}
+                  onClick={() => {
+                    localStorage.clear();
+                    router.push("/");
+                  }}
                   className="bg-red-600 text-white py-2 px-6 rounded-lg font-medium hover:bg-red-700 transition"
                 >
                   Close
