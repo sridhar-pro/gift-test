@@ -8,13 +8,14 @@ import PopupForm from "../components/PopupForm2"; // Import the form component
 import Related from "../Home/Related";
 
 export default function ProductList() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
   const [category, setCategory] = useState(null);
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
-  const router = useRouter();
-  const searchParams = useSearchParams();
 
   const [selectedOption, setSelectedOption] = useState(null);
   const [selectedVariant, setSelectedVariant] = useState(null);
