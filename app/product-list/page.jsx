@@ -428,6 +428,27 @@ export default function ProductList() {
     initializePage();
   }, [router, searchParams]);
 
+  useEffect(() => {
+    const queryCategoryId = searchParams.get("categoryId");
+
+    if (!queryCategoryId) return;
+
+    setCategory({
+      id: queryCategoryId,
+      name:
+        categoryContent[queryCategoryId]?.name ||
+        categoryContent["default"].name,
+    });
+
+    localStorage.setItem("selectedCategoryId", queryCategoryId);
+    setProducts(staticProducts[queryCategoryId] || staticProducts.default);
+    setActiveImg(
+      staticProducts[queryCategoryId]?.[0]?.images?.[0] ||
+        staticProducts[queryCategoryId]?.[0]?.image ||
+        null
+    );
+  }, [searchParams]);
+
   const handleBack = () => {
     router.back();
   };

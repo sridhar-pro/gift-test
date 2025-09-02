@@ -62,9 +62,11 @@ export default function RelatedCategories() {
 
     fetchCategories();
   }, [currentCategoryId]);
+
   const handleCategoryClick = (categoryId) => {
     router.push(`/product-list?categoryId=${categoryId}`);
   };
+
   const scrollRef = (direction) => {
     const container = document.getElementById("related-category-slider");
     if (container) {
