@@ -16,6 +16,7 @@ import CorporateGiftingBanner from "./Banner";
 import WhyChooseYuukke from "./WhyChoose";
 import Prebook from "./Prebook";
 import CategoryCr from "./Category_cr";
+import NeedHelp from "./NeedHelp";
 
 // const baseImageUrl = "https://marketplace.betalearnings.com/assets/uploads/";
 
@@ -241,9 +242,10 @@ export default function Home() {
       {/* Combos Section */}
       {/* <ComboSection combos={combos} /> */}
       <CorporateGiftingBanner />
-      <WhyChooseYuukke />
       <CategoryCr />
+      <WhyChooseYuukke />
       <Prebook />
+      {/* <NeedHelp /> */}
 
       {/* Categories Section */}
       {/* <CategorySection /> */}

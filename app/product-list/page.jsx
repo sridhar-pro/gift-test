@@ -2,14 +2,34 @@
 import { Suspense, useEffect, useState } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowLeft, Star, ShoppingCart } from "lucide-react";
+import {
+  ArrowLeft,
+  Star,
+  ShoppingCart,
+  MessageCircle,
+  Minus,
+  Plus,
+} from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import PopupForm from "../components/PopupForm2"; // Import the form component
 import Related from "../Home/Related";
+import PopupForm1 from "../components/PopupForm";
 
 function ProductListInner() {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const [quantity, setQuantity] = useState(1);
+
+  const increaseQuantity = () =>
+    setQuantity((prev) => (prev < 10 ? prev + 1 : 10));
+
+  const decreaseQuantity = () =>
+    setQuantity((prev) => (prev > 1 ? prev - 1 : 1));
+
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+
+  const openPopup = () => setIsPopupOpen(true);
+  const closePopup = () => setIsPopupOpen(false);
 
   const [category, setCategory] = useState(null);
   const [products, setProducts] = useState([]);
@@ -70,6 +90,7 @@ function ProductListInner() {
         "Gift with Purpose – Every hamper supports artisan livelihoods and conscious commerce.",
       ],
       price: 87500, // ₹500 in paise for Razorpay
+      image: "/product-list/def1.png",
     },
     890: {
       name: "Eco Luxe",
@@ -86,6 +107,7 @@ function ProductListInner() {
         "Sophisticated & Sustainable – A modern hamper for mindful celebrations.",
       ],
       price: 200000, // ₹750 in paise for Razorpay
+      image: "/product-list/def4.jpg",
     },
     891: {
       name: "Gratitude Box",
@@ -102,6 +124,7 @@ function ProductListInner() {
         "Impact-Driven – Every purchase supports women artisans and small businesses.",
       ],
       price: 79000, // ₹600 in paise for Razorpay
+      image: "/product-list/def3.png",
     },
     889: {
       name: "Mini Treasures",
@@ -117,6 +140,7 @@ function ProductListInner() {
         "Affordable & Joyful – Small hamper, big impact",
       ],
       price: 60000, // ₹400 in paise for Razorpay
+      image: "/product-list/def2.png",
     },
     896: {
       name: "Elite Desk Hamper",
@@ -131,7 +155,40 @@ function ProductListInner() {
         "Affordable & Joyful – Small hamper, big impact",
       ],
       price: 250000, // ₹400 in paise for Razorpay
+      image: "/product-list/def5.jpg",
     },
+    898: {
+      name: "The Bamboo Luxe Hamper",
+      title: "The Bamboo Luxe Hamper",
+      description:
+        "Whether it’s corporate gifting, festive occasions, or eco-friendly celebrations, this hamper blends luxury with sustainability. Every piece is crafted to inspire mindful living while empowering women entrepreneurs and artisans through Yuukke.",
+      tagline: "Nature’s touch, packed with care.",
+      features: [
+        "Bamboo Water Bottle – stylish & reusable ",
+        "Eco Diary with Bamboo Pen – for mindful notes & ideas ",
+        "Handcrafted Bamboo Coasters – blending elegance & sustainability ",
+        "Bamboo Phone Holder – functional & natural ",
+        "Eco Coffee Mug – perfect for everyday impact ",
+      ],
+      price: 345000, // ₹2,990 in paise for Razorpay
+      image: "/product-list/s6.jpg",
+    },
+    897: {
+      name: "The Conscious Luxe Corporate Hamper",
+      title: "The Conscious Luxe Corporate Hamper",
+      description:
+        "Upgrade corporate gifting with purpose. The Conscious Luxe Corporate Hamper blends premium cork-base work essentials with festive warmth — perfect for professionals who value sustainability and style. Thoughtfully curated to inspire productivity, balance, and conscious living.",
+      tagline: "Luxury that cares for the planet.",
+      features: [
+        "Premium Curation – Handpicked eco-luxe essentials for high-end gifting",
+        "Sustainable & Stylish – Crafted with environmentally responsible materials",
+        "Perfect for CXOs & VIPs – Leaves a sophisticated and lasting impression",
+        "Corporate Elegance – A thoughtful blend of sustainability and exclusivity",
+      ],
+      price: 350000, // ₹4,500 in paise for Razorpay
+      image: "/product-list/s9.jpg",
+    },
+
     default: {
       name: "Premium Gifts",
       title:
@@ -418,6 +475,114 @@ function ProductListInner() {
         image: "/product-list/nuts.png",
       },
     ],
+    898: [
+      {
+        id: 1,
+        name: "Wine & Cheese Set",
+        description: "Fine wine paired with artisan cheeses",
+        price: "₹4,299",
+        rating: 4.8,
+        image: "/product-list/s6.jpg",
+      },
+      {
+        id: 3,
+        name: "Wine & Cheese Set",
+        description: "Fine wine paired with artisan cheeses",
+        price: "₹4,299",
+        rating: 4.8,
+        image: "/product-list/s2.jpg",
+      },
+      {
+        id: 4,
+        name: "Wine & Cheese Set",
+        description: "Fine wine paired with artisan cheeses",
+        price: "₹4,299",
+        rating: 4.8,
+        image: "/product-list/s7.jpg",
+      },
+      {
+        id: 5,
+        name: "Wine & Cheese Set",
+        description: "Fine wine paired with artisan cheeses",
+        price: "₹4,299",
+        rating: 4.8,
+        image: "/product-list/s5.jpg",
+      },
+      {
+        id: 6,
+        name: "Wine & Cheese Set",
+        description: "Fine wine paired with artisan cheeses",
+        price: "₹4,299",
+        rating: 4.8,
+        image: "/product-list/s1.jpg",
+      },
+      {
+        id: 7,
+        name: "Wine & Cheese Set",
+        description: "Fine wine paired with artisan cheeses",
+        price: "₹4,299",
+        rating: 4.8,
+        image: "/product-list/s21.png",
+      },
+      {
+        id: 8,
+        name: "Wine & Cheese Set",
+        description: "Fine wine paired with artisan cheeses",
+        price: "₹4,299",
+        rating: 4.8,
+        image: "/product-list/nuts.png",
+      },
+    ],
+    897: [
+      {
+        id: 1,
+        name: "Wine & Cheese Set",
+        description: "Fine wine paired with artisan cheeses",
+        price: "₹4,299",
+        rating: 4.8,
+        image: "/product-list/s9.jpg",
+      },
+      {
+        id: 2,
+        name: "Wine & Cheese Set",
+        description: "Fine wine paired with artisan cheeses",
+        price: "₹4,299",
+        rating: 4.8,
+        image: "/product-list/15.jpg",
+      },
+      {
+        id: 3,
+        name: "Wine & Cheese Set",
+        description: "Fine wine paired with artisan cheeses",
+        price: "₹4,299",
+        rating: 4.8,
+        image: "/product-list/coffeemugblack.png",
+      },
+      {
+        id: 4,
+        name: "Wine & Cheese Set",
+        description: "Fine wine paired with artisan cheeses",
+        price: "₹4,299",
+        rating: 4.8,
+        image: "/product-list/s8.jpg",
+      },
+      {
+        id: 5,
+        name: "Wine & Cheese Set",
+        description: "Fine wine paired with artisan cheeses",
+        price: "₹4,299",
+        rating: 4.8,
+        image: "/product-list/s20.png",
+      },
+      {
+        id: 8,
+        name: "Wine & Cheese Set",
+        description: "Fine wine paired with artisan cheeses",
+        price: "₹4,299",
+        rating: 4.8,
+        image: "/product-list/s10.jpg",
+      },
+    ],
     // Default products for any category
     default: [
       {
@@ -440,6 +605,12 @@ function ProductListInner() {
   };
 
   const categoryContentsMap = {
+    "Signature Conscious": [
+      "Eco Coffee Mug 220 ml",
+      "Fabric Cover Notebook",
+      "Metal Flower Shape Candle",
+      "Mixed Dry Fruits 100gm",
+    ],
     "Mini Treasures": [
       "Brass Candle with Rich Velvet Pouch",
       "Flavoured DipTea (3 sachets)",
@@ -464,6 +635,23 @@ function ProductListInner() {
       "Mixed Dry Fruits 100gm",
       "Elegant Organiser",
       "Handmade Flower-Shaped Candle",
+    ],
+    "The Bamboo Luxe Hamper": [
+      "Bamboo Water Bottle",
+      "Eco Diary with Bamboo Pen ",
+      "Handcrafted Bamboo Coasters",
+      "Bamboo Phone Holder",
+      "Eco Coffee Mug",
+      "Almonds 50g",
+    ],
+    "The Conscious Luxe Corporate Hamper": [
+      "Cork Base Black Bottle (500ml)",
+      "Cork Base Black Mug (450ml)",
+      "Cork Base A5 Diary (160 ruled pages) ",
+      "Cork Base Metal Card Holder (4 x 2.5 inches) ",
+      "Cork Base Ball Pen (Blue Ink) ",
+      "Set of 2 Small Diyas ",
+      "Personalized Greeting Card",
     ],
   };
 
@@ -508,6 +696,21 @@ function ProductListInner() {
     categoryContent[category?.id] || categoryContent["default"];
 
   useEffect(() => {
+    if (!currentCategoryContent?.name) {
+      console.log("❌ No current category content to store");
+      return;
+    }
+
+    // Save the current category content
+    localStorage.setItem(
+      "selectedCategoryContent",
+      JSON.stringify(currentCategoryContent)
+    );
+
+    // console.log("✅ Saved selected category content:", currentCategoryContent);
+  }, [currentCategoryContent]);
+
+  useEffect(() => {
     if (!currentCategoryContent?.name) return;
 
     const contents = categoryContentsMap[currentCategoryContent.name];
@@ -538,6 +741,18 @@ function ProductListInner() {
       </div>
     );
   }
+
+  const handleCheckout = () => {
+    const payload = {
+      product: selectedProduct,
+      category,
+      categoryContent: currentCategoryContent,
+      quantity, // ✅ Include quantity
+    };
+
+    sessionStorage.setItem("checkoutData", JSON.stringify(payload));
+    router.push("/checkout");
+  };
 
   return (
     <div className="min-h-screen bg-gray-50 font-gift">
@@ -623,30 +838,77 @@ function ProductListInner() {
               ))}
             </div>
 
-            <div className="flex md:hidden flex-col justify-start">
+            {/* Description */}
+            <p className="text-gray-700  text-justify">
+              {currentCategoryContent.description}
+            </p>
+            {/* Mobile Price & Checkout Section */}
+            <div className="flex md:hidden flex-col w-full mt-4 space-y-3">
               {/* Price Section */}
-              <div className="">
-                <p className="text-3xl font-bold text-[#a00300]">
+              <div>
+                <p className="text-2xl font-bold text-[#a00300]">
                   ₹ {(currentCategoryContent.price / 100).toFixed(2)}
                 </p>
-                <p className="text-sm text-gray-500 mt-1">
+                <p className="text-xs text-gray-500">
                   (TAX included · FREE Shipping)
                 </p>
               </div>
-            </div>
 
-            {categoryContentsMap[currentCategoryContent?.name] && (
-              <div className="mt-4 mb-8">
-                <h3 className="font-semibold text-gray-800 mb-2">Contents:</h3>
-                <ul className="list-disc list-inside space-y-1 text-gray-700">
-                  {categoryContentsMap[currentCategoryContent.name].map(
-                    (item, idx) => (
-                      <li key={idx}>{item}</li>
-                    )
-                  )}
-                </ul>
+              {/* Quantity + Button Wrapper */}
+              <div className="flex flex-col xs:flex-row items-stretch xs:items-center gap-3 w-full">
+                {/* Quantity Selector */}
+                <div className="flex items-center justify-between border border-gray-300 rounded-lg shadow-sm w-full xs:w-auto">
+                  <button
+                    onClick={decreaseQuantity}
+                    className="px-4 py-2 bg-gray-100 hover:bg-gray-200 transition disabled:opacity-50"
+                    disabled={quantity === 1}
+                  >
+                    <Minus className="h-4 w-4 text-gray-600" />
+                  </button>
+                  <span className="px-4 py-2 font-semibold text-gray-800 select-none min-w-[30px] text-center">
+                    {quantity}
+                  </span>
+                  <button
+                    onClick={increaseQuantity}
+                    className="px-4 py-2 bg-gray-100 hover:bg-gray-200 transition"
+                  >
+                    <Plus className="h-4 w-4 text-gray-600" />
+                  </button>
+                </div>
+
+                {/* Pay & Proceed Button */}
+                <button
+                  onClick={handleCheckout}
+                  className="bg-black hover:bg-gray-800 text-white font-semibold px-6 py-3 rounded-lg shadow transition-all w-full xs:w-auto mb-4"
+                >
+                  Pay & Proceed
+                </button>
               </div>
-            )}
+              {categoryContentsMap[currentCategoryContent?.name] && (
+                <div className="mt-4 mb-8">
+                  <h3 className="font-semibold text-gray-800 mb-2">
+                    Contents:
+                  </h3>
+                  <ul className="list-disc list-inside space-y-1 text-gray-700">
+                    {currentCategoryContent?.name === "Signature Conscious"
+                      ? [
+                          // Use selected variants if any, else fall back to defaults
+                          savedVariants["Eco Coffee Mug 220 ml"] ||
+                            "Eco Coffee Mug 220 ml",
+                          savedVariants["Fabric Cover Notebook"] ||
+                            "Fabric Cover Notebook",
+                          savedVariants["Metal Flower Shape Candle"] ||
+                            "Metal Flower Shape Candle",
+                          savedVariants["Mixed Dry Fruits 100gm"] ||
+                            "Mixed Dry Fruits 100gm",
+                        ].map((item, idx) => <li key={idx}>{item}</li>)
+                      : categoryContentsMap[currentCategoryContent.name].map(
+                          (item, idx) => <li key={idx}>{item}</li>
+                        )}
+                  </ul>
+                </div>
+              )}
+            </div>
 
             {/* === New Section: Choose Options (only for category 888) === */}
             {currentCategoryContent?.name === "Signature Conscious" && (
@@ -839,20 +1101,6 @@ function ProductListInner() {
               )}
             </AnimatePresence>
 
-            {/* Description */}
-            <p className="text-gray-700  text-justify">
-              {currentCategoryContent.description}
-            </p>
-
-            <div className="flex md:hidden items-center justify-center">
-              <PopupForm
-                inline={true}
-                product={selectedProduct}
-                category={category}
-                categoryContent={currentCategoryContent}
-              />
-            </div>
-
             {/* Wrapper for Key Features + Static Images */}
             <div className="flex flex-col lg:flex-row lg:gap-6 border-t pt-4">
               {/* Left: Key Features */}
@@ -903,8 +1151,8 @@ function ProductListInner() {
           </div>
 
           {/* Right Side - Product Details */}
-          <div className="">
-            <div className="hidden md:flex flex-col justify-start p-6">
+          <div className="p-6">
+            <div className="hidden md:flex flex-col justify-start">
               {/* Title */}
               <h2 className="text-3xl font-bold text-[#A00030] mb-3">
                 {currentCategoryContent.title}
@@ -919,20 +1167,127 @@ function ProductListInner() {
                   (TAX included · FREE Shipping)
                 </p>
               </div>
-              <div className="">
-                <PopupForm
-                  inline={true}
-                  product={selectedProduct}
-                  category={category}
-                  categoryContent={currentCategoryContent}
-                />
+
+              {categoryContentsMap[currentCategoryContent?.name] && (
+                <div className="mt-4 mb-8">
+                  <h3 className="font-semibold text-gray-800 mb-2">
+                    Contents:
+                  </h3>
+                  <ul className="list-disc list-inside space-y-1 text-gray-700">
+                    {currentCategoryContent?.name === "Signature Conscious"
+                      ? [
+                          // Use selected variants if any, else fall back to defaults
+                          savedVariants["Eco Coffee Mug 220 ml"] ||
+                            "Eco Coffee Mug 220 ml",
+                          savedVariants["Fabric Cover Notebook"] ||
+                            "Fabric Cover Notebook",
+                          savedVariants["Metal Flower Shape Candle"] ||
+                            "Metal Flower Shape Candle",
+                          savedVariants["Mixed Dry Fruits 100gm"] ||
+                            "Mixed Dry Fruits 100gm",
+                        ].map((item, idx) => <li key={idx}>{item}</li>)
+                      : categoryContentsMap[currentCategoryContent.name].map(
+                          (item, idx) => <li key={idx}>{item}</li>
+                        )}
+                  </ul>
+                </div>
+              )}
+              <div className="hidden md:flex items-center gap-6 mt-4">
+                {/* Quantity Selector */}
+                <div className="flex items-center border border-gray-300 rounded-full overflow-hidden shadow-md bg-white transition-all duration-300 hover:shadow-lg">
+                  <button
+                    onClick={decreaseQuantity}
+                    className="px-4 py-3 bg-gray-100 hover:bg-gray-200 transition disabled:opacity-40 disabled:cursor-not-allowed"
+                    disabled={quantity === 1}
+                    aria-label="Decrease Quantity"
+                  >
+                    <Minus className="h-5 w-5 text-gray-700" />
+                  </button>
+                  <span className="px-5 py-3 font-semibold text-gray-900 text-lg min-w-[40px] text-center select-none">
+                    {quantity}
+                  </span>
+                  <button
+                    onClick={increaseQuantity}
+                    className="px-4 py-3 bg-gray-100 hover:bg-gray-200 transition"
+                    aria-label="Increase Quantity"
+                  >
+                    <Plus className="h-5 w-5 text-gray-700" />
+                  </button>
+                </div>
+
+                {/* Pay & Proceed Button */}
+                <button
+                  onClick={handleCheckout}
+                  className="bg-black hover:bg-gray-800 text-white font-semibold px-6 py-3 rounded-md shadow transition-all"
+                >
+                  Pay & Proceed
+                </button>
               </div>
             </div>
 
-            {/* ⬇️ Related Products Section */}
-            <div className="mt-12">
-              <h3 className="text-2xl font-bold mb-4">You may also like</h3>
-              <Related />
+            <div>
+              {/* ⬇️ Related Products Section */}
+              <div className="mt-12">
+                <h3 className="text-2xl font-bold mb-4">You may also like</h3>
+                <Related />
+
+                {/* 🌟 Enquiry Section */}
+                <div className="mt-12 text-center">
+                  {/* Heading */}
+                  <h4 className="text-2xl font-semibold text-gray-800">
+                    Have a Question or Need Bulk Orders?
+                  </h4>
+                  <p className="mt-2 text-gray-600 text-sm sm:text-base max-w-xl mx-auto">
+                    Click on{" "}
+                    <span className="font-semibold text-[#a00300] cursor-pointer">
+                      "Enquire Now"
+                    </span>{" "}
+                    to discuss this hamper or explore more options. You can also
+                    reach us via <br className="flex md:hidden" />
+                    <span className="font-semibold text-[#a00300]">
+                      email
+                    </span>{" "}
+                    at{" "}
+                    <a
+                      href="mailto:hello@thegoodroad.in"
+                      className="font-semibold text-[#a00300] hover:underline"
+                    >
+                      support@yuukke.com
+                    </a>{" "}
+                    .
+                  </p>
+
+                  {/* Enquiry Button */}
+                  <div className="mt-6 flex justify-center">
+                    <button
+                      onClick={openPopup}
+                      className="group relative inline-flex items-center justify-center gap-2 px-6 py-3
+          text-white font-semibold text-base
+          rounded-md bg-gradient-to-r from-[#a00300] via-[#b30000] to-[#ff4d4d]
+          shadow-md shadow-red-300/30 hover:shadow-red-400/50
+          transition-all duration-300 ease-in-out
+          transform hover:scale-105 hover:-translate-y-1
+          focus:outline-none focus:ring-4 focus:ring-red-300"
+                    >
+                      <MessageCircle className="w-5 h-5" />
+                      <span className="relative z-10">Enquire Now</span>
+                      <span className="absolute inset-0 rounded-md bg-gradient-to-r from-[#ff6b6b] to-[#a00300] opacity-0 group-hover:opacity-20 transition duration-300"></span>
+                    </button>
+                  </div>
+
+                  {/* Trust Note */}
+                  <p className="mt-3 text-xs text-gray-500">
+                    We usually reply within{" "}
+                    <span className="font-semibold text-[#a00300]">
+                      24 hours
+                    </span>
+                    .
+                  </p>
+                </div>
+              </div>
+
+              {/* ⬇️ Popup Form */}
+              <PopupForm1 isOpen={isPopupOpen} onClose={closePopup} />
             </div>
           </div>
         </div>

@@ -1,8 +1,16 @@
 "use client";
 import { useState, useEffect } from "react";
-import { X, FileText, Gift, CreditCard, CheckCircle } from "lucide-react";
+import {
+  X,
+  FileText,
+  Gift,
+  CreditCard,
+  CheckCircle,
+  Wallet2,
+} from "lucide-react";
 import toast, { Toaster } from "react-hot-toast";
 import { useRouter } from "next/navigation";
+import { motion, AnimatePresence } from "framer-motion";
 
 const PopupForm = ({
   isOpen = false,
@@ -13,6 +21,18 @@ const PopupForm = ({
   inline = false,
 }) => {
   const router = useRouter();
+
+  const [quantity, setQuantity] = useState(1);
+
+  // ✅ Fetch quantity from sessionStorage if available
+  useEffect(() => {
+    const stored = sessionStorage.getItem("checkoutData");
+    if (stored) {
+      const parsed = JSON.parse(stored);
+      setQuantity(parsed?.quantity || 1);
+    }
+  }, []);
+
   const [formData, setFormData] = useState({
     name: "",
     phone: "",
@@ -28,6 +48,23 @@ const PopupForm = ({
   const [loading, setLoading] = useState(false);
   const [paymentSuccess, setPaymentSuccess] = useState(false);
   const [insertedId, setInsertedId] = useState(null);
+
+  const [selectedMethod, setSelectedMethod] = useState("razorpay");
+  const [showInfo, setShowInfo] = useState(true);
+
+  const handleRadioChange = (e) => {
+    setSelectedMethod(e.target.value);
+    setShowInfo(true);
+  };
+
+  const handleToggle = () => {
+    if (selectedMethod === "razorpay") {
+      setShowInfo((prev) => !prev);
+    } else {
+      setSelectedMethod("razorpay");
+      setShowInfo(true);
+    }
+  };
 
   // Load Razorpay script
   useEffect(() => {
@@ -78,7 +115,7 @@ const PopupForm = ({
   // Initialize Razorpay payment
   const initiatePayment = async (prebookingId) => {
     return new Promise((resolve, reject) => {
-      const amount = categoryContent?.price || 50000; // Use category price or default
+      const amount = (categoryContent?.price || 50000) * quantity;
 
       const options = {
         key: "rzp_live_lclCyKLWqjYCIJ", // Your Razorpay key rzp_test_Gnu8neTnUU656M /rzp_live_lclCyKLWqjYCIJ
@@ -191,6 +228,14 @@ const PopupForm = ({
         }
       }
 
+      // Generate product_item payload smartly
+      const selectedVariants =
+        JSON.parse(localStorage.getItem("selectedVariants")) || {};
+      const selectedContents =
+        JSON.parse(localStorage.getItem("selectedContents")) || [];
+      const isSignatureConscious =
+        categoryContent?.name === "Signature Conscious";
+
       // 2. Prepare request body
       const requestBody = {
         full_name: formData.name,
@@ -199,13 +244,15 @@ const PopupForm = ({
         city: formData.city,
         prebookingType: formData.prebookingType,
         catalogue: formData.catalogue,
-        price: categoryContent?.price / 100,
-        product_item: [
-          ...Object.values(
-            JSON.parse(localStorage.getItem("selectedVariants")) || {}
-          ),
-          ...(JSON.parse(localStorage.getItem("selectedContents")) || []),
-        ].join(", "),
+        price: (categoryContent?.price / 100) * quantity,
+        quantity_required: quantity,
+
+        // Generate product_item dynamically
+        product_item: isSignatureConscious
+          ? selectedContents
+              .map((item) => selectedVariants[item] || item) // Use selected variant if available
+              .join(", ")
+          : selectedContents.join(", "), // For other categories, send only default contents
       };
 
       // 3. Call our API proxy
@@ -298,11 +345,7 @@ const PopupForm = ({
             : "fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4 overflow-y-auto"
         }
       >
-        <div
-          className={`bg-white rounded-xl shadow-lg w-full max-w-lg relative my-8 mx-auto max-h-[90vh] overflow-y-auto ${
-            inline ? "static mx-0 my-0 max-h-full" : ""
-          }`}
-        >
+        <div className={`overflow-y-auto ${inline ? "" : ""}`}>
           {/* Close Button */}
           {!inline && (
             <button
@@ -313,7 +356,7 @@ const PopupForm = ({
             </button>
           )}
 
-          <div className="p-6">
+          <div className="p-0">
             {paymentSuccess ? (
               <div className="text-center py-8">
                 <CheckCircle className="h-16 w-16 text-green-500 mx-auto mb-4" />
@@ -346,7 +389,9 @@ const PopupForm = ({
                     </p>
                   </div>
                 )}
-
+                <h2 className="text-2xl font-semibold text-gray-900 mb-4">
+                  Delivery
+                </h2>
                 <form onSubmit={handleSubmit} className="space-y-4">
                   {/* Full Name */}
                   <div>
@@ -364,7 +409,7 @@ const PopupForm = ({
                       onChange={handleChange}
                       required
                       placeholder="Enter your full name"
-                      className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-red-500 outline-none transition"
+                      className="input-field"
                     />
                   </div>
 
@@ -385,7 +430,7 @@ const PopupForm = ({
                       maxLength={10}
                       required
                       placeholder="Enter your phone number"
-                      className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-red-500 outline-none transition"
+                      className="input-field"
                     />
                   </div>
 
@@ -405,7 +450,7 @@ const PopupForm = ({
                       onChange={handleChange}
                       required
                       placeholder="Enter your business email"
-                      className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-red-500 outline-none transition"
+                      className="input-field"
                     />
                   </div>
 
@@ -425,7 +470,7 @@ const PopupForm = ({
                       onChange={handleChange}
                       required
                       placeholder="Enter your city"
-                      className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-red-500 outline-none transition"
+                      className="input-field"
                     />
                   </div>
 
@@ -509,17 +554,121 @@ const PopupForm = ({
                   {/* Prebooking Type (hidden, set to "order") */}
                   <input type="hidden" name="prebookingType" value="order" />
 
+                  {/* Payment Section */}
+                  <div className="">
+                    <h1 className="text-xl font-[800] tracking-tight">
+                      Payment
+                    </h1>
+                    <p className="text-gray-400 text-xs">
+                      All transactions are secure and encrypted.
+                    </p>
+
+                    <div className="mt-4 border border-gray-300 rounded-lg p-4 bg-white">
+                      <label
+                        className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between "
+                        onClick={handleToggle}
+                      >
+                        <div className="flex items-start gap-2 sm:items-center">
+                          <input
+                            type="radio"
+                            name="payment"
+                            value="razorpay"
+                            checked={selectedMethod === "razorpay"}
+                            onChange={handleRadioChange}
+                            className="accent-black w-4 h-4 mt-1 sm:mt-0 cursor-pointer"
+                          />
+                          <span className="text-sm font-medium">
+                            Razorpay Secure
+                            <br className="block sm:hidden" />
+                            <br className="hidden lg:block" />
+                            <span className="text-xs text-gray-600">
+                              (UPI, Cards, Wallets, NetBanking)
+                            </span>
+                          </span>
+                        </div>
+
+                        <div className="flex items-center flex-wrap gap-2 justify-end sm:justify-normal">
+                          <img
+                            src="/upi.svg"
+                            alt="UPI"
+                            className="w-8 h-8 sm:w-10 sm:h-10 object-contain"
+                          />
+                          <img
+                            src="/visa.svg"
+                            alt="Visa"
+                            className="w-8 h-8 sm:w-10 sm:h-10 object-contain"
+                          />
+                          <img
+                            src="/master.svg"
+                            alt="Master"
+                            className="w-8 h-8 sm:w-10 sm:h-10 object-contain"
+                          />
+                          <img
+                            src="/rupay.svg"
+                            alt="Rupay"
+                            className="w-8 h-8 sm:w-10 sm:h-10 object-contain"
+                          />
+                          <div className="relative group">
+                            <div className="w-7 h-7 sm:w-8 sm:h-8 bg-gray-100 rounded-md text-xs font-bold flex items-center justify-center cursor-pointer group-hover:bg-gray-200">
+                              +16
+                            </div>
+                            <div className="absolute bottom-12 right-0 hidden group-hover:grid grid-cols-4 gap-2 bg-black shadow-xl rounded-lg border p-2 z-20 w-[176px]">
+                              {Array.from({ length: 16 }).map((_, i) => (
+                                <img
+                                  key={i}
+                                  src={`/${i + 1}.svg`}
+                                  alt={`Payment ${i + 1}`}
+                                  className="w-7 h-7 object-contain"
+                                />
+                              ))}
+                            </div>
+                          </div>
+                        </div>
+                      </label>
+
+                      <AnimatePresence initial={false}>
+                        <motion.div
+                          key={showInfo ? "visible" : "hidden"}
+                          initial={{ opacity: 0, height: 0 }}
+                          animate={{
+                            opacity: 1,
+                            height: "auto",
+                            marginBottom: showInfo ? 16 : 0, // Prevents button jump
+                          }}
+                          exit={{ opacity: 0, height: 0 }}
+                          transition={{ duration: 0.3 }}
+                          className="overflow-hidden"
+                        >
+                          {showInfo && (
+                            <div className="border-t pt-4 mt-6 text-center bg-gray-50">
+                              <div className="flex justify-center mb-3">
+                                <Wallet2 className="w-10 h-10 sm:w-12 sm:h-12" />
+                              </div>
+                              <p className="text-sm text-gray-700 font-medium max-w-md mx-auto">
+                                After clicking “Pay now”, you'll be redirected
+                                to Cashfree Payments to securely complete your
+                                purchase using UPI, Cards, Wallets or
+                                NetBanking.
+                              </p>
+                            </div>
+                          )}
+                        </motion.div>
+                      </AnimatePresence>
+                    </div>
+                  </div>
+
                   {/* Submit Button */}
                   <button
                     type="submit"
                     disabled={loading}
-                    className="w-full bg-gradient-to-r from-red-700 via-pink-600 to-red-600 text-white py-3 rounded-lg font-semibold text-md hover:opacity-90 transition-all duration-300 disabled:opacity-50"
+                    className="w-full bg-black text-white py-3 rounded-lg font-semibold text-md hover:opacity-90 transition-all duration-300 disabled:opacity-50"
                   >
                     {loading
                       ? "Processing..."
-                      : `Pay ₹${
-                          (categoryContent?.price || 50000) / 100
-                        } Deposit & Order`}
+                      : `Pay ₹${(
+                          ((categoryContent?.price || 50000) * quantity) /
+                          100
+                        ).toFixed(2)} Deposit & Order`}
                   </button>
                 </form>
               </>

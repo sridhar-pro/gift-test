@@ -108,27 +108,33 @@ export default function Footer() {
   return (
     <footer className="bg-white text-sm text-[#911439]">
       {/* Subscribe Section */}
-      <div className="w-full py-6 bg-white p-4">
-        <div className="flex flex-col md:flex-row items-center md:justify-between gap-6 md:gap-10 px-4 max-w-[105rem] mx-auto">
-          <div className="flex flex-col md:flex-row items-center gap-6 md:gap-40 ml-0 md:ml-6 text-center md:text-left">
+      <div className="w-full py-6 bg-white px-4">
+        <div className="flex flex-col md:flex-row items-center md:justify-between gap-8 max-w-7xl mx-auto">
+          {/* Left Section */}
+          <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6 text-center sm:text-left">
             <img
               src="/subscribe.png"
               alt="Logo"
-              className="w-20 h-20 object-contain mx-auto md:mx-0"
+              className="w-16 h-16 sm:w-20 sm:h-20 object-contain"
             />
-            <p className="text-[#911439] font-semibold text-2xl md:text-[2rem]">
+            <p className="text-[#911439] font-semibold text-xl sm:text-2xl md:text-[2rem] leading-snug">
               Get offers in your inbox
             </p>
           </div>
-          <div className="flex flex-col md:flex-row gap-4 md:gap-2 w-full md:w-auto mt-4 md:mt-0">
+
+          {/* Right Section */}
+          <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
+            {/* Input with gradient border */}
             <div className="p-[2px] rounded bg-gradient-to-r from-red-700 to-red-800 flex-1">
               <input
                 type="email"
-                placeholder="Enter your mail here"
-                className="w-full md:w-[28rem] px-3 py-2 rounded outline-none bg-white text-black"
+                placeholder="Enter your email here"
+                className="w-full px-3 py-2 rounded outline-none bg-white text-black text-sm sm:text-base"
               />
             </div>
-            <button className="bg-gradient-to-r from-blue-950 to-red-900 text-white px-4 py-2 rounded-sm hover:from-blue-800 hover:to-blue-950 transition w-full md:w-56">
+
+            {/* Button */}
+            <button className="bg-gradient-to-r from-blue-950 to-red-900 text-white px-4 py-2 rounded-sm hover:from-blue-800 hover:to-blue-950 transition w-full sm:w-40 md:w-56">
               Subscribe Me!
             </button>
           </div>
@@ -243,42 +249,81 @@ export default function Footer() {
       </div>
 
       {/* Bottom Footer Bar */}
-      <div className="bg-gradient-to-r from-blue-950 to-[#911439] text-white text-sm py-4 px-20 tracking-wider">
-        <div className="flex flex-col md:flex-row justify-between items-center px-6 gap-4 text-center md:text-left">
-          <div className="flex-shrink-0">
+      <div
+        className="bg-gradient-to-r from-blue-950 to-[#911439] text-white text-sm px-4 sm:px-8 md:px-16 lg:px-20 py-6"
+        translate="no"
+      >
+        <div className="flex flex-col gap-4 md:gap-6 md:flex-row md:items-center md:justify-between text-center md:text-left">
+          {/* Copyright */}
+          <div className="text-xs sm:text-sm">
             ©2025 Yuukke Global Ventures Private Limited.
           </div>
-          <div className="flex flex-wrap justify-center gap-2 text-xs md:text-sm">
-            <a href="#" className="hover:underline">
+
+          {/* Links */}
+          <div className="flex flex-wrap justify-center gap-2 sm:gap-4 text-[10px] sm:text-xs md:text-sm">
+            <a
+              href="https://marketplace.yuukke.com/themes/yuukke/shop/assets/images/Yuukke-Privacy-Policy.pdf"
+              className="hover:underline"
+            >
               Privacy
-            </a>{" "}
-            |
-            <a href="#" className="hover:underline">
+            </a>
+            <span className="hidden sm:inline">|</span>
+            <a
+              href="https://marketplace.yuukke.com/page/shipping"
+              className="hover:underline"
+            >
               Shipping
-            </a>{" "}
-            |
-            <a href="#" className="hover:underline">
+            </a>
+            <span className="hidden sm:inline">|</span>
+            <a
+              href="https://marketplace.yuukke.com/themes/yuukke/shop/assets/images/Returns.pdf"
+              className="hover:underline"
+            >
               Returns & Refund
-            </a>{" "}
-            |
-            <a href="#" className="hover:underline">
+            </a>
+            <span className="hidden sm:inline">|</span>
+            <a
+              href="https://marketplace.yuukke.com/themes/yuukke/shop/assets/images/yuukke_tnc.pdf"
+              className="hover:underline"
+            >
               T&C
-            </a>{" "}
-            |
-            <a href="#" className="hover:underline">
+            </a>
+            <span className="hidden sm:inline">|</span>
+            <a
+              href="https://yuukke.com/contact-us/"
+              className="hover:underline"
+            >
               Contact
             </a>
           </div>
-          <div className="flex-shrink-0 flex flex-wrap items-center justify-center gap-3 text-white mr-0 md:mr-52 mt-4 md:mt-0">
-            <span className="text-base">Follow us |</span>
-            <a href="#">
-              <FaFacebookF className="w-5 h-5 text-white hover:text-gray-300 cursor-pointer" />
+
+          {/* Socials */}
+          <div className="flex justify-center md:justify-end items-center gap-3 text-xs sm:text-sm">
+            <span className="hidden sm:inline">Follow us</span>
+            <a
+              href="https://www.facebook.com/YUUKKEGLOBAL"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Visit Yuukke Facebook Page"
+            >
+              <FaFacebookF className="w-4 h-4 sm:w-5 sm:h-5 hover:text-gray-300 cursor-pointer" />
             </a>
-            <a href="#">
-              <FaInstagram className="w-5 h-5 text-white hover:text-gray-300 cursor-pointer" />
+            <a
+              href="https://www.instagram.com/yuukkeglobal/"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Visit Yuukke Instagram Page"
+            >
+              <FaInstagram className="w-4 h-4 sm:w-5 sm:h-5 hover:text-gray-300 cursor-pointer" />
             </a>
-            <a href="#">
-              <FaLinkedinIn className="w-5 h-5 text-white hover:text-gray-300 cursor-pointer" />
+
+            <a
+              href="https://www.linkedin.com/company/yuukkeglobal/posts/?feedView=all"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Visit Yuukke LinkedIn Page"
+            >
+              <FaLinkedinIn className="w-4 h-4 sm:w-5 sm:h-5 hover:text-gray-300 cursor-pointer" />
             </a>
           </div>
         </div>

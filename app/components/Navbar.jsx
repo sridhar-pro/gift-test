@@ -172,7 +172,7 @@ export default function Navbar({
       <nav className="bg-[#f9f9f959] shadow-sm px-6 py-3 md:py-8 top-0 z-[100] font-serif">
         <div className="flex justify-between items-center w-full ">
           {/* Logo */}
-          <Link href="/" className="flex items-center">
+          <Link href="https://shop.yuukke.com/" className="flex items-center">
             <div className="relative w-[100px] h-[50px] lg:w-[170px] lg:h-[45px]">
               <Image
                 src="/logo.png"
@@ -290,7 +290,7 @@ export default function Navbar({
               <Heart className="w-5 h-5 text-black cursor-pointer" />
             </a>
             <button
-              onClick={() => setIsModalOpen(true)}
+              onClick={() => router.push("/checkout")}
               aria-label="Cart"
               className="relative flex items-center justify-center hover:scale-105 transition-transform"
             >
@@ -305,9 +305,9 @@ export default function Navbar({
 
             {/* Mobile Cart */}
             <button
-              onClick={() => setIsModalOpen(true)}
+              onClick={() => router.push("/checkout")}
               aria-label="Cart"
-              className="relative flex items-center justify-center"
+              className="relative flex items-center justify-center hover:scale-105 transition-transform"
             >
               <ShoppingCart className="w-5 h-5 text-black" />
             </button>

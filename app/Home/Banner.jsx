@@ -1,13 +1,23 @@
 "use client";
 
-import { Gift, Leaf, Heart, CheckCircle, Star, ArrowRight } from "lucide-react";
+import {
+  Gift,
+  Leaf,
+  Heart,
+  CheckCircle,
+  Star,
+  ArrowRight,
+  FileText,
+} from "lucide-react";
 import Link from "next/link";
 import PopupForm from "../components/PopupForm";
 import { useState } from "react";
 
 export default function CorporateGiftingBanner() {
+  const [isOpen, setIsOpen] = useState(false);
+  const [formMode, setFormMode] = useState("quotation");
   const [isFormOpen, setIsFormOpen] = useState(false);
-    const scrollToGiftCategory = () => {
+  const scrollToGiftCategory = () => {
     const giftCategorySection = document.getElementById("category-slider");
     if (giftCategorySection) {
       giftCategorySection.scrollIntoView({ behavior: "smooth" });
@@ -62,7 +72,10 @@ export default function CorporateGiftingBanner() {
           <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 mt-4">
             {/* Prebook Now Button */}
             <button
-              onClick={() => setIsFormOpen(true)}
+              onClick={() => {
+                setFormMode("prebooking");
+                setIsOpen(true);
+              }}
               className="flex items-center justify-center gap-2 px-8 py-4 rounded-md text-white text-md font-semibold bg-[linear-gradient(135deg,hsl(0,50%,30%),hsl(345,70%,40%),hsl(0,60%,50%))] hover:opacity-90 hover:scale-105 transform transition-all duration-300 w-full sm:w-auto"
             >
               Prebook Now
@@ -70,17 +83,22 @@ export default function CorporateGiftingBanner() {
             </button>
 
             <PopupForm
-              isOpen={isFormOpen}
-              onClose={() => setIsFormOpen(false)}
+              isOpen={isOpen}
+              onClose={() => setIsOpen(false)}
+              mode={formMode}
             />
 
             {/* Explore Catalog Button */}
-          <button 
-            onClick={scrollToGiftCategory}
-            className="px-8 py-4 rounded-md text-black text-md font-semibold bg-white hover:bg-[linear-gradient(105deg,hsl(51,100%,67%),hsl(40,70%,45%),#333333)] hover:text-white transition-all duration-300 w-full sm:w-auto"
-          >
-            Explore Catalog
-          </button>
+            <button
+              onClick={() => {
+                setFormMode("quotation");
+                setIsOpen(true);
+              }}
+              className="flex items-center justify-center px-8 py-4 rounded-md text-black text-md font-semibold bg-white hover:bg-[linear-gradient(105deg,hsl(51,100%,67%),hsl(40,70%,45%),#333333)] hover:text-white transition-all duration-300 w-full sm:w-auto group"
+            >
+              Get a Quote
+              <FileText className="h-4 w-4 ml-1 text-black group-hover:text-white transition-colors duration-300" />
+            </button>
           </div>
 
           {/* Stats */}
