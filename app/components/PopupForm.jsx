@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { X, CreditCard, CheckCircle } from "lucide-react";
 import toast, { Toaster } from "react-hot-toast";
 
-const PopupForm = ({ isOpen, onClose, mode }) => {
+const PopupForm = ({ isOpen, onClose, mode, defaultCatalogue }) => {
   const [formData, setFormData] = useState({
     name: "",
     phone: "",
@@ -12,7 +12,7 @@ const PopupForm = ({ isOpen, onClose, mode }) => {
     giftingFor: "",
     budget: "",
     quantity: "",
-    catalogue: "",
+    catalogue: defaultCatalogue || "",
   });
 
   const [loading, setLoading] = useState(false);
@@ -43,7 +43,7 @@ const PopupForm = ({ isOpen, onClose, mode }) => {
         giftingFor: "",
         budget: "",
         quantity: "",
-        catalogue: "",
+        catalogue: defaultCatalogue || "",
       });
       setPaymentSuccess(false);
       setInsertedId(null);
@@ -54,7 +54,7 @@ const PopupForm = ({ isOpen, onClose, mode }) => {
     return () => {
       document.body.style.overflow = "unset";
     };
-  }, [isOpen]);
+  }, [isOpen, defaultCatalogue]);
 
   const handleChange = (e) => {
     setFormData({
@@ -81,6 +81,11 @@ const PopupForm = ({ isOpen, onClose, mode }) => {
           name: formData.name,
           email: formData.email,
           contact: formData.phone,
+        },
+        modal: {
+          ondismiss: function () {
+            reject(new Error("Payment cancelled")); // payment cancelled
+          },
         },
         theme: {
           color: "#F37254",
@@ -422,7 +427,7 @@ const PopupForm = ({ isOpen, onClose, mode }) => {
                     </div>
 
                     {/* Catalogue */}
-                    {mode === "prebooking" && (
+                    {mode === "prebooking" && defaultCatalogue && (
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-1">
                           Catalogue
@@ -434,15 +439,8 @@ const PopupForm = ({ isOpen, onClose, mode }) => {
                           required
                           className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-red-500 outline-none transition bg-white"
                         >
-                          <option value="">Select a catalogue</option>
-                          <option value="signature-conscious">
-                            Signature Conscious
-                          </option>
-                          <option value="eco-luxe">Eco Luxe</option>
-                          <option value="gratitude-box">Gratitude Box</option>
-                          <option value="mini-treasures">Mini Treasures</option>
-                          <option value="elite-desk-hamper">
-                            Elite Desk Hamper
+                          <option value={defaultCatalogue}>
+                            {defaultCatalogue}
                           </option>
                         </select>
                       </div>

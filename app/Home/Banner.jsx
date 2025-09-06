@@ -8,6 +8,7 @@ import {
   Star,
   ArrowRight,
   FileText,
+  ArrowDown,
 } from "lucide-react";
 import Link from "next/link";
 import PopupForm from "../components/PopupForm";
@@ -71,7 +72,7 @@ export default function CorporateGiftingBanner() {
           {/* Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 mt-4">
             {/* Prebook Now Button */}
-            <button
+            {/* <button
               onClick={() => {
                 setFormMode("prebooking");
                 setIsOpen(true);
@@ -80,7 +81,7 @@ export default function CorporateGiftingBanner() {
             >
               Prebook Now
               <ArrowRight className="h-5 w-5 text-white" />
-            </button>
+            </button> */}
 
             <PopupForm
               isOpen={isOpen}
@@ -98,6 +99,20 @@ export default function CorporateGiftingBanner() {
             >
               Get a Quote
               <FileText className="h-4 w-4 ml-1 text-black group-hover:text-white transition-colors duration-300" />
+            </button>
+
+            {/* Featured Products Button */}
+            <button
+              onClick={() => {
+                const section = document.getElementById("featured-products");
+                if (section) {
+                  section.scrollIntoView({ behavior: "smooth" });
+                }
+              }}
+              className="flex items-center justify-center gap-2 px-8 py-4 rounded-md text-white text-md font-semibold bg-[linear-gradient(135deg,hsl(0,50%,30%),hsl(345,70%,40%),hsl(0,60%,50%))] hover:opacity-90 hover:scale-105 transform transition-all duration-300 w-full sm:w-auto"
+            >
+              Explore Catelogue
+              <ArrowDown className="h-5 w-5 text-white animate-bounce" />
             </button>
           </div>
 

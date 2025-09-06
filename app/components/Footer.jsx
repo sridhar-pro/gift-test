@@ -1,8 +1,12 @@
 "use client";
+import { MailCheck } from "lucide-react";
+import Image from "next/image";
 import { useEffect, useState } from "react";
 import { FaFacebookF, FaInstagram, FaLinkedinIn } from "react-icons/fa";
+import { usePathname } from "next/navigation";
 
 export default function Footer() {
+  const pathname = usePathname();
   const [apiCategories, setApiCategories] = useState([]);
 
   const staticSection = {
@@ -104,42 +108,77 @@ export default function Footer() {
   }, []);
 
   const footerData = [staticSection, ...apiCategories];
+  const [email, setEmail] = useState("");
+  const [subscribed, setSubscribed] = useState(false);
+
+  const handleSubscribe = () => {
+    if (!email) return;
+    setSubscribed(true);
+    // here you can also trigger your API call
+  };
+
+  // 🔥 Auto-clear after 10 seconds
+  useEffect(() => {
+    if (subscribed) {
+      const timer = setTimeout(() => {
+        setSubscribed(false);
+      }, 10000); // 10 seconds
+
+      return () => clearTimeout(timer); // cleanup
+    }
+  }, [subscribed]);
 
   return (
-    <footer className="bg-white text-sm text-[#911439]">
+    <footer className="bg-white text-sm text-[#911439] font-gift">
       {/* Subscribe Section */}
-      <div className="w-full py-6 bg-white px-4">
-        <div className="flex flex-col md:flex-row items-center md:justify-between gap-8 max-w-7xl mx-auto">
-          {/* Left Section */}
-          <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6 text-center sm:text-left">
-            <img
-              src="/subscribe.png"
-              alt="Logo"
-              className="w-16 h-16 sm:w-20 sm:h-20 object-contain"
-            />
-            <p className="text-[#911439] font-semibold text-xl sm:text-2xl md:text-[2rem] leading-snug">
-              Get offers in your inbox
-            </p>
-          </div>
-
-          {/* Right Section */}
-          <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
-            {/* Input with gradient border */}
-            <div className="p-[2px] rounded bg-gradient-to-r from-red-700 to-red-800 flex-1">
-              <input
-                type="email"
-                placeholder="Enter your email here"
-                className="w-full px-3 py-2 rounded outline-none bg-white text-black text-sm sm:text-base"
+      {pathname === "/" && (
+        <div className="w-full py-6 bg-white p-4">
+          <div className="flex flex-col md:flex-row items-center md:justify-between gap-6 md:gap-10 px-4 max-w-[105rem] mx-auto">
+            {/* Left side */}
+            <div className="flex flex-col md:flex-row items-center gap-6 md:gap-40 ml-0 md:ml-6 text-center md:text-left">
+              <Image
+                src="/subscribe.png"
+                alt="Logo"
+                width={80}
+                height={80}
+                className="object-contain mx-auto md:mx-0"
               />
+              <p className="text-[#911439] font-semibold text-2xl md:text-[2rem]">
+                Get offers in your inbox
+              </p>
             </div>
 
-            {/* Button */}
-            <button className="bg-gradient-to-r from-blue-950 to-red-900 text-white px-4 py-2 rounded-sm hover:from-blue-800 hover:to-blue-950 transition w-full sm:w-40 md:w-56">
-              Subscribe Me!
-            </button>
+            {/* Right side */}
+            <div className="flex flex-col w-full md:w-auto mt-4 md:mt-0">
+              <div className="flex flex-col md:flex-row gap-4 md:gap-2 items-start md:items-center">
+                <div className="p-[1px] rounded bg-gradient-to-r from-red-700 to-red-800 w-full sm:max-w-md md:max-w-lg lg:max-w-xl xl:max-w-2xl">
+                  <input
+                    type="email"
+                    placeholder="Enter your mail here"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="w-full px-3 py-2 rounded outline-none bg-white text-black text-sm sm:text-base"
+                  />
+                </div>
+
+                <button
+                  onClick={handleSubscribe}
+                  className="bg-gradient-to-r from-blue-950 to-red-900 text-white px-4 py-2 rounded-sm hover:from-blue-800 hover:to-blue-950 transition w-full md:w-56"
+                >
+                  Subscribe Me!
+                </button>
+              </div>
+
+              {subscribed && (
+                <p className="flex items-center gap-2 text-green-600 font-semibold text-sm mt-2">
+                  <MailCheck className="w-4 h-4" />
+                  Subscribed as {email}
+                </p>
+              )}
+            </div>
           </div>
         </div>
-      </div>
+      )}
 
       {/* Footer Links Section */}
       <div className="w-full px-4">

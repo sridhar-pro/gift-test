@@ -9,6 +9,7 @@ import {
   MessageCircle,
   Minus,
   Plus,
+  ArrowRight,
 } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import PopupForm from "../components/PopupForm2"; // Import the form component
@@ -19,6 +20,9 @@ function ProductListInner() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [quantity, setQuantity] = useState(1);
+
+  const [isOpen, setIsOpen] = useState(false);
+  const [formMode, setFormMode] = useState("quotation");
 
   const increaseQuantity = () =>
     setQuantity((prev) => (prev < 10 ? prev + 1 : 10));
@@ -695,6 +699,9 @@ function ProductListInner() {
   const currentCategoryContent =
     categoryContent[category?.id] || categoryContent["default"];
 
+  const defaultCatalogue =
+    currentCategoryContent?.title || currentCategoryContent;
+
   useEffect(() => {
     if (!currentCategoryContent?.name) {
       console.log("❌ No current category content to store");
@@ -879,10 +886,28 @@ function ProductListInner() {
                 {/* Pay & Proceed Button */}
                 <button
                   onClick={handleCheckout}
-                  className="bg-black hover:bg-gray-800 text-white font-semibold px-6 py-3 rounded-lg shadow transition-all w-full xs:w-auto mb-4"
+                  className="bg-black hover:bg-gray-800 text-white font-semibold px-6 py-3 rounded-lg shadow transition-all w-full xs:w-auto mb-0"
                 >
                   Pay & Proceed
                 </button>
+
+                <button
+                  onClick={() => {
+                    setFormMode("prebooking");
+                    setIsOpen(true);
+                  }}
+                  className="flex items-center justify-center gap-2 px-8 py-4 rounded-md text-white text-md font-semibold bg-[linear-gradient(135deg,hsl(0,50%,30%),hsl(345,70%,40%),hsl(0,60%,50%))] hover:opacity-90 hover:scale-105 transform transition-all duration-300 w-full sm:w-auto"
+                >
+                  Prebook Now
+                  <ArrowRight className="h-5 w-5 text-white" />
+                </button>
+
+                <PopupForm1
+                  isOpen={isOpen}
+                  onClose={() => setIsOpen(false)}
+                  mode={formMode}
+                  defaultCatalogue={currentCategoryContent.title} // ✅ pass title here
+                />
               </div>
               {categoryContentsMap[currentCategoryContent?.name] && (
                 <div className="mt-4 mb-8">
@@ -1222,6 +1247,24 @@ function ProductListInner() {
                 >
                   Pay & Proceed
                 </button>
+
+                <button
+                  onClick={() => {
+                    setFormMode("prebooking");
+                    setIsOpen(true);
+                  }}
+                  className="flex items-center justify-center gap-2 px-8 py-4 rounded-md text-white text-md font-semibold bg-[linear-gradient(135deg,hsl(0,50%,30%),hsl(345,70%,40%),hsl(0,60%,50%))] hover:opacity-90 hover:scale-105 transform transition-all duration-300 w-full sm:w-auto"
+                >
+                  Prebook Now
+                  <ArrowRight className="h-5 w-5 text-white" />
+                </button>
+
+                <PopupForm1
+                  isOpen={isOpen}
+                  onClose={() => setIsOpen(false)}
+                  mode={formMode}
+                  defaultCatalogue={currentCategoryContent.title} // ✅ pass title here
+                />
               </div>
             </div>
 

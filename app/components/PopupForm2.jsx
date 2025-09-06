@@ -38,6 +38,10 @@ const PopupForm = ({
     phone: "",
     email: "",
     city: "",
+    state: "", // ✅ added
+    address: "", // ✅ added
+    pincode: "", // ✅ added
+    landmark: "",
     giftingFor: "",
     budget: "",
     quantity: "",
@@ -88,6 +92,10 @@ const PopupForm = ({
         phone: "",
         email: "",
         city: "",
+        state: "", // ✅ added
+        address: "", // ✅ added
+        pincode: "", // ✅ added
+        landmark: "",
         giftingFor: "",
         budget: "",
         quantity: "",
@@ -128,6 +136,11 @@ const PopupForm = ({
         order_id: null,
         handler: function (response) {
           resolve(response);
+        },
+        modal: {
+          ondismiss: function () {
+            reject(new Error("Payment cancelled")); // payment cancelled
+          },
         },
         prefill: {
           name: formData.name,
@@ -228,6 +241,19 @@ const PopupForm = ({
         }
       }
 
+      if (
+        !formData.name ||
+        !formData.phone ||
+        !formData.email ||
+        !formData.city ||
+        !formData.state ||
+        !formData.pincode
+      ) {
+        toast.error("Please fill in all required fields.");
+        setLoading(false);
+        return;
+      }
+
       // Generate product_item payload smartly
       const selectedVariants =
         JSON.parse(localStorage.getItem("selectedVariants")) || {};
@@ -242,6 +268,10 @@ const PopupForm = ({
         phone_number: formData.phone,
         email: formData.email,
         city: formData.city,
+        address: formData.address, // 🆕 include address
+        state: formData.state, // 🆕 include state
+        pincode: formData.pincode, // 🆕 include pincode
+        landmark: formData.landmark,
         prebookingType: formData.prebookingType,
         catalogue: formData.catalogue,
         price: (categoryContent?.price / 100) * quantity,
@@ -303,7 +333,7 @@ const PopupForm = ({
       }
     } catch (error) {
       console.error("[Form Error]:", error);
-      toast.error("Payment failed. Please try again.");
+      toast.error(error.message || "Payment failed. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -413,67 +443,154 @@ const PopupForm = ({
                     />
                   </div>
 
-                  {/* Phone Number */}
-                  <div>
-                    <label
-                      htmlFor="phone"
-                      className="block text-sm font-medium text-gray-700 mb-1"
-                    >
-                      Phone Number
-                    </label>
-                    <input
-                      type="tel"
-                      id="phone"
-                      name="phone"
-                      value={formData.phone}
-                      onChange={handleChange}
-                      maxLength={10}
-                      required
-                      placeholder="Enter your phone number"
-                      className="input-field"
-                    />
+                  <div className="flex flex-col md:flex-row gap-4">
+                    {/* Business Email */}
+                    <div className="flex-1">
+                      <label
+                        htmlFor="email"
+                        className="block text-sm font-medium text-gray-700 mb-1"
+                      >
+                        Business Email
+                      </label>
+                      <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        value={formData.email}
+                        onChange={handleChange}
+                        required
+                        placeholder="Enter your business email"
+                        className="input-field w-full"
+                      />
+                    </div>
+
+                    {/* Phone Number */}
+                    <div className="flex-1">
+                      <label
+                        htmlFor="phone"
+                        className="block text-sm font-medium text-gray-700 mb-1"
+                      >
+                        Phone Number
+                      </label>
+                      <input
+                        type="tel"
+                        id="phone"
+                        name="phone"
+                        value={formData.phone}
+                        onChange={handleChange}
+                        maxLength={10}
+                        required
+                        placeholder="Enter your phone number"
+                        className="input-field w-full"
+                      />
+                    </div>
                   </div>
 
-                  {/* Business Email */}
+                  {/* Address */}
                   <div>
                     <label
-                      htmlFor="email"
+                      htmlFor="address"
                       className="block text-sm font-medium text-gray-700 mb-1"
                     >
-                      Business Email
-                    </label>
-                    <input
-                      type="email"
-                      id="email"
-                      name="email"
-                      value={formData.email}
-                      onChange={handleChange}
-                      required
-                      placeholder="Enter your business email"
-                      className="input-field"
-                    />
-                  </div>
-
-                  {/* City */}
-                  <div>
-                    <label
-                      htmlFor="city"
-                      className="block text-sm font-medium text-gray-700 mb-1"
-                    >
-                      City
+                      Address
                     </label>
                     <input
                       type="text"
-                      id="city"
-                      name="city"
-                      value={formData.city}
+                      id="address"
+                      name="address"
+                      value={formData.address}
                       onChange={handleChange}
                       required
-                      placeholder="Enter your city"
+                      placeholder="Enter your full address"
                       className="input-field"
                     />
                   </div>
 
+                  {/* City + Landmark in same row */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    {/* City */}
+                    <div>
+                      <label
+                        htmlFor="city"
+                        className="block text-sm font-medium text-gray-700 mb-1"
+                      >
+                        City
+                      </label>
+                      <input
+                        type="text"
+                        id="city"
+                        name="city"
+                        value={formData.city}
+                        onChange={handleChange}
+                        required
+                        placeholder="Enter your city"
+                        className="input-field"
+                      />
+                    </div>
+
+                    {/* Landmark */}
+                    <div>
+                      <label
+                        htmlFor="landmark"
+                        className="block text-sm font-medium text-gray-700 mb-1"
+                      >
+                        Landmark
+                      </label>
+                      <input
+                        type="text"
+                        id="landmark"
+                        name="landmark"
+                        value={formData.landmark}
+                        onChange={handleChange}
+                        placeholder="Nearby landmark (optional)"
+                        className="input-field"
+                      />
+                    </div>
+                  </div>
+
+                  {/* State & Pincode in same row */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {/* State */}
+                    <div>
+                      <label
+                        htmlFor="state"
+                        className="block text-sm font-medium text-gray-700 mb-1"
+                      >
+                        State
+                      </label>
+                      <input
+                        type="text"
+                        id="state"
+                        name="state"
+                        value={formData.state}
+                        onChange={handleChange}
+                        required
+                        placeholder="Enter your state"
+                        className="input-field"
+                      />
+                    </div>
+
+                    {/* Pincode */}
+                    <div>
+                      <label
+                        htmlFor="pincode"
+                        className="block text-sm font-medium text-gray-700 mb-1"
+                      >
+                        Pincode
+                      </label>
+                      <input
+                        type="text"
+                        id="pincode"
+                        name="pincode"
+                        value={formData.pincode}
+                        onChange={handleChange}
+                        maxLength={6}
+                        required
+                        placeholder="Enter your pincode"
+                        className="input-field"
+                      />
+                    </div>
+                  </div>
                   {/* Gifting For */}
                   {/* <div>
                     <label

@@ -422,36 +422,169 @@ export const productSlugs = [
 ];
 
 // Headings and descriptions for each category
+// export const categoryContent = {
+//   "Zen Zone": {
+//     title: "The Zen Dad Collection - Meditation & Relaxation",
+//     description:
+//       "Unwind with our handpicked selection of calming products designed to bring peace, balance, and relaxation into your daily life.",
+//   },
+//   "Natural Care": {
+//     title: "The All-Rounder - Head to Toe Dad Edition",
+//     description:
+//       "A thoughtfully curated set to keep Dad refreshed, relaxed, and completely cared for from head to toe.",
+//   },
+//   "Desk Edition": {
+//     title: "Zen Dad Desk Edition – Hustle, the Zen Way",
+//     description:
+//       "Where productivity meets peace, this set supports mindful focus with a touch of daily calm, perfect for the dad who does it all with grace.",
+//   },
+//   "Rustic Snacks": {
+//     title: "Snack Mindfully – Foodie Edition",
+//     description:
+//       "Fuel your day the smart way with wholesome, delicious snacks made from clean, natural ingredients—perfect for mindful munching.",
+//   },
+//   Travels: {
+//     title: "TRAVEL READY ESSENTIALS - Compact Comfort Kit",
+//     description:
+//       "Stay fresh and organized on the go with our must-have travel companions, designed for convenience and care wherever you roam.",
+//   },
+//   Gifts: {
+//     title: "GRATITUDE IN A BOX - Gifting Made Thoughtful",
+//     description:
+//       "Express your appreciation with curated gift boxes that bring joy, warmth, and a personal touch to every occasion.",
+//   },
+// };
+
+//new
 export const categoryContent = {
-  "Zen Zone": {
-    title: "The Zen Dad Collection - Meditation & Relaxation",
+  888: {
+    name: "Signature Conscious",
+    title:
+      "Signature Conscious Selection Hamper | Sustainable & Artisan-Crafted Festive Gift Box | Premium Corporate & Diwali Gifting",
     description:
-      "Unwind with our handpicked selection of calming products designed to bring peace, balance, and relaxation into your daily life.",
+      "The Signature Conscious Selection Hamper is where luxury meets responsibility. This eco-friendly, artisan-crafted hamper brings together sustainable lifestyle essentials, festive treats, and handcrafted keepsakes. Perfect for Diwali, corporate clients, or loved ones who value purpose-driven gifting.",
+    tagline: "Celebrate consciously, gift meaningfully.",
+    features: [
+      "Eco-Conscious Luxury – Blends festive elegance with sustainable living.",
+      "Artisan-Made – Handpicked items crafted by women artisans and small businesses.",
+      "Versatile Gifting – Ideal for corporates, families, and festive celebrations.",
+      "Sustainable & Stylish – Premium packaging with minimal environmental impact.",
+      "Gift with Purpose – Every hamper supports artisan livelihoods and conscious commerce.",
+    ],
+    price: 87500, // ₹500 in paise for Razorpay
+    image: "/product-list/def1.png",
   },
-  "Natural Care": {
-    title: "The All-Rounder - Head to Toe Dad Edition",
+  890: {
+    name: "Eco Luxe",
+    title:
+      "Eco-Luxe Selection Hamper | Luxury Sustainable Festive Gift Box | Premium Eco-Friendly Corporate & Personal Gifting",
     description:
-      "A thoughtfully curated set to keep Dad refreshed, relaxed, and completely cared for from head to toe.",
+      "The Eco-Luxe Selection Hamper is curated for those who love indulgence with integrity. Combining eco-conscious design with high-end artisanal products — from organic beauty to premium homeware — this hamper is a refined choice for Diwali, festive, and corporate gifting.",
+    tagline: "Luxury that loves back.",
+    features: [
+      "Luxury with Purpose – Premium artisan-crafted products made sustainably.",
+      "Eco-Luxe Essentials – Organic, eco-friendly items with a luxe finish.",
+      "Perfect for Premium Gifting – Great for executives, clients, and loved ones.",
+      "Sustainably Packaged – Elegant, eco-conscious festive packaging.",
+      "Sophisticated & Sustainable – A modern hamper for mindful celebrations.",
+    ],
+    price: 200000, // ₹750 in paise for Razorpay
+    image: "/product-list/def4.jpg",
   },
-  "Desk Edition": {
-    title: "Zen Dad Desk Edition – Hustle, the Zen Way",
+  891: {
+    name: "Gratitude Box",
+    title:
+      "Gratitude Box | Thoughtful Festive Hamper for Employees, Clients & Loved Ones | Sustainable Diwali & Corporate Gifting",
     description:
-      "Where productivity meets peace, this set supports mindful focus with a touch of daily calm, perfect for the dad who does it all with grace.",
+      "The Gratitude Box is a heartfelt way to say thank you. Curated with sustainable festive products and artisan-crafted essentials, this hamper celebrates relationships with warmth, authenticity, and impact. Perfect for employees, clients, and personal gifting.",
+    tagline: "When thanks need to be extraordinary.",
+    features: [
+      "Gift of Gratitude – A hamper designed to appreciate and celebrate bonds.",
+      "Sustainably Curated – Eco-friendly, artisan-made festive products.",
+      "Perfect for Employees & Clients – An ideal corporate gifting solution.",
+      "Festive & Thoughtful – Designed to spread joy during Diwali and beyond.",
+      "Impact-Driven – Every purchase supports women artisans and small businesses.",
+    ],
+    price: 79000, // ₹600 in paise for Razorpay
+    image: "/product-list/def3.png",
   },
-  "Rustic Snacks": {
-    title: "Snack Mindfully – Foodie Edition",
+  889: {
+    name: "Mini Treasures",
+    title:
+      "Mini Treasures | Compact Festive Gift Hamper | Thoughtful & Eco-Friendly Diwali Gifting",
     description:
-      "Fuel your day the smart way with wholesome, delicious snacks made from clean, natural ingredients—perfect for mindful munching.",
+      "The Mini Treasures Hamper is proof that small gifts can carry big joy. A compact curation of festive essentials, this hamper is perfect for employees, friends, and family — offering a taste of Yuukke's conscious and celebratory spirit.",
+    tagline: "Little gifts, big smiles.",
+    features: [
+      "Compact & Thoughtful – Perfect for meaningful gestures on a budget",
+      "Eco-Friendly Festivity – Features handcrafted, sustainable products",
+      "Ideal for Bulk Gifting – Employees, colleagues, or friends",
+      "Affordable & Joyful – Small hamper, big impact",
+    ],
+    price: 60000, // ₹400 in paise for Razorpay
+    image: "/product-list/def2.png",
   },
-  Travels: {
-    title: "TRAVEL READY ESSENTIALS - Compact Comfort Kit",
+  896: {
+    name: "Elite Desk Hamper",
+    title: "Elite essentials for mindful professionals.",
     description:
-      "Stay fresh and organized on the go with our must-have travel companions, designed for convenience and care wherever you roam.",
+      "The Elite Desk Hamper is a perfect blend of elegance and utility — designed for professionals who value style and substance. Featuring a sleek desk organiser, a fabric-covered notebook, and a handmade flower-shaped candle, this hamper makes workspaces more inspiring and gifting more meaningful.",
+    tagline: "Little gifts, big smiles.",
+    features: [
+      "Compact & Thoughtful – Perfect for meaningful gestures on a budget",
+      "Eco-Friendly Festivity – Features handcrafted, sustainable products",
+      "Ideal for Bulk Gifting – Employees, colleagues, or friends",
+      "Affordable & Joyful – Small hamper, big impact",
+    ],
+    price: 250000, // ₹400 in paise for Razorpay
+    image: "/product-list/def5.jpg",
   },
-  Gifts: {
-    title: "GRATITUDE IN A BOX - Gifting Made Thoughtful",
+  898: {
+    name: "The Bamboo Luxe Hamper",
+    title: "The Bamboo Luxe Hamper",
     description:
-      "Express your appreciation with curated gift boxes that bring joy, warmth, and a personal touch to every occasion.",
+      "Whether it’s corporate gifting, festive occasions, or eco-friendly celebrations, this hamper blends luxury with sustainability. Every piece is crafted to inspire mindful living while empowering women entrepreneurs and artisans through Yuukke.",
+    tagline: "Nature’s touch, packed with care.",
+    features: [
+      "Bamboo Water Bottle – stylish & reusable ",
+      "Eco Diary with Bamboo Pen – for mindful notes & ideas ",
+      "Handcrafted Bamboo Coasters – blending elegance & sustainability ",
+      "Bamboo Phone Holder – functional & natural ",
+      "Eco Coffee Mug – perfect for everyday impact ",
+    ],
+    price: 345000, // ₹2,990 in paise for Razorpay
+    image: "/product-list/s6.jpg",
+  },
+  897: {
+    name: "The Conscious Luxe Corporate Hamper",
+    title: "The Conscious Luxe Corporate Hamper",
+    description:
+      "Upgrade corporate gifting with purpose. The Conscious Luxe Corporate Hamper blends premium cork-base work essentials with festive warmth — perfect for professionals who value sustainability and style. Thoughtfully curated to inspire productivity, balance, and conscious living.",
+    tagline: "Luxury that cares for the planet.",
+    features: [
+      "Premium Curation – Handpicked eco-luxe essentials for high-end gifting",
+      "Sustainable & Stylish – Crafted with environmentally responsible materials",
+      "Perfect for CXOs & VIPs – Leaves a sophisticated and lasting impression",
+      "Corporate Elegance – A thoughtful blend of sustainability and exclusivity",
+    ],
+    price: 350000, // ₹4,500 in paise for Razorpay
+    image: "/product-list/s9.jpg",
+  },
+
+  default: {
+    name: "Premium Gifts",
+    title:
+      "Premium Gift Collection | Exquisite Presentation | Memorable Gifting",
+    description:
+      "Discover our curated collection of premium gifts, each thoughtfully designed to create lasting impressions for any occasion.",
+    tagline: "Elevate your gifting experience.",
+    features: [
+      "Premium Quality – Finest materials and craftsmanship",
+      "Versatile Options – Perfect for various occasions and recipients",
+      "Elegant Packaging – Beautiful presentation that impresses",
+      "Meaningful Selection – Gifts that resonate with recipients",
+    ],
+    price: 50000, // ₹500 in paise for Razorpay
   },
 };
 

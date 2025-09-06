@@ -4,7 +4,7 @@ import React, { useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
-import { categories, productsData, categoryContent } from "@/app/data/products";
+// import { categories, productsData, categoryContent } from "@/app/data/products";
 
 const CategoryProducts = () => {
   const [activeCategory, setActiveCategory] = useState("Zen Zone");

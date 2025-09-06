@@ -1,17 +1,16 @@
 "use client";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { ChevronLeft, ChevronRight, Gift } from "lucide-react";
+import { ArrowRight, CircleCheck, Gem, Gift, Leaf } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { categoryContent } from "../data/products";
 
 export default function CategoryCr() {
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [isPaused, setIsPaused] = useState(false);
   const router = useRouter();
-  const sliderRef = useRef(null);
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -57,6 +56,7 @@ export default function CategoryCr() {
         }
 
         const data = await response.json();
+        // console.log("data", data);
         setCategories(Array.isArray(data?.data) ? data.data : []);
       } catch (error) {
         console.error("Error fetching categories:", error);
@@ -75,50 +75,11 @@ export default function CategoryCr() {
     router.push("/product-list");
   };
 
-  // Auto-slide logic
-  useEffect(() => {
-    if (!sliderRef.current || categories.length === 0) return;
-
-    // ⬇️ Stop auto-scroll if on mobile (<=768px)
-    if (window.innerWidth <= 768) return;
-
-    let animationFrame;
-
-    const slide = () => {
-      if (!isPaused && sliderRef.current) {
-        sliderRef.current.scrollLeft += 1;
-
-        // When scrolled to the end of the duplicated list, reset seamlessly
-        if (sliderRef.current.scrollLeft >= sliderRef.current.scrollWidth / 2) {
-          sliderRef.current.scrollLeft = 0;
-        }
-      }
-      animationFrame = requestAnimationFrame(slide);
-    };
-
-    animationFrame = requestAnimationFrame(slide);
-
-    return () => cancelAnimationFrame(animationFrame);
-  }, [categories, isPaused]);
-
-  // Manual slide (arrows)
-  const handleScroll = (direction) => {
-    if (sliderRef.current) {
-      setIsPaused(true); // pause auto-slide when arrow clicked
-
-      const scrollAmount = sliderRef.current.offsetWidth * 0.8; // ~80% of visible width
-      sliderRef.current.scrollBy({
-        left: direction === "left" ? -scrollAmount : scrollAmount,
-        behavior: "smooth",
-      });
-
-      // resume auto-slide after short delay
-      setTimeout(() => setIsPaused(false), 2000);
-    }
-  };
-
   return (
-    <div className="relative px-6 md:px-10 py-2 md:py-12 bg-gradient-to-b from-gray-50 to-white font-gift">
+    <div
+      id="featured-products"
+      className="relative px-6 md:px-10 py-2 md:py-12 bg-gradient-to-b from-gray-50 to-white font-gift"
+    >
       {/* Header */}
       <motion.div
         className="text-center mb-12"
@@ -137,19 +98,35 @@ export default function CategoryCr() {
           to make lasting impressions.
         </p>
       </motion.div>
+
       {/* State Handling */}
       {loading ? (
-        <div className="flex justify-center items-center h-64">
-          <div className="animate-pulse flex space-x-4">
-            <div className="rounded-full bg-gray-200 h-12 w-12"></div>
-            <div className="flex-1 space-y-4 py-1">
-              <div className="h-4 bg-gray-200 rounded w-3/4"></div>
-              <div className="space-y-2">
-                <div className="h-4 bg-gray-200 rounded"></div>
-                <div className="h-4 bg-gray-200 rounded w-5/6"></div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
+          {Array.from({ length: 8 }).map((_, i) => (
+            <div
+              key={i}
+              className="bg-white rounded-xl overflow-hidden shadow-md border border-gray-100 h-[340px] flex flex-col animate-pulse"
+            >
+              {/* Image Section Skeleton */}
+              <div className="w-full h-[260px] bg-gray-200"></div>
+
+              {/* Content Skeleton */}
+              <div className="p-3 flex flex-col flex-1">
+                {/* Title */}
+                <div className="h-4 bg-gray-200 rounded w-3/4 mb-2"></div>
+
+                {/* Description lines */}
+                <div className="h-3 bg-gray-200 rounded w-full mb-1"></div>
+                <div className="h-3 bg-gray-200 rounded w-5/6 mb-3"></div>
+
+                {/* Price + Button */}
+                <div className="mt-auto flex justify-between items-center">
+                  <div className="h-4 bg-gray-200 rounded w-20"></div>
+                  <div className="h-4 bg-gray-200 rounded w-12"></div>
+                </div>
               </div>
             </div>
-          </div>
+          ))}
         </div>
       ) : error ? (
         <p className="text-center text-red-500">{error}</p>
@@ -161,78 +138,98 @@ export default function CategoryCr() {
           <p className="text-gray-500">No categories found.</p>
         </div>
       ) : (
-        <div className="relative">
-          {/* Left Arrow (mobile only) */}
-          <button
-            onClick={() => handleScroll("left")}
-            className="absolute left-0 top-1/2 -translate-y-1/2 bg-white p-2 rounded-full shadow-md md:hidden z-10"
-          >
-            <ChevronLeft className="w-6 h-6 text-gray-700" />
-          </button>
-          <div
-            ref={sliderRef}
-            className="flex overflow-x-auto gap-6 scroll-smooth scrollbar-hide pb-4"
-            onMouseEnter={() => setIsPaused(true)}
-            onMouseLeave={() => setIsPaused(false)}
-            style={{
-              scrollbarWidth: "none",
-              msOverflowStyle: "none",
-            }}
-          >
-            {[
-              ...categories,
-              ...categories,
-              ...categories,
-              ...categories,
-              ...categories,
-              ...categories,
-              ...categories,
-            ].map((cat, index) => (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
+          {categories.map((cat) => {
+            const staticData = categoryContent[cat.id];
+            const price = staticData ? staticData.price / 100 : "—";
+
+            // ✅ Tags mapping
+            const tagMap = {
+              890: ["Eco", "Premium"],
+              891: ["Premium"],
+              896: ["Eco"],
+              897: ["Premium"],
+            };
+
+            const tags = tagMap[cat.id] || [];
+
+            return (
               <motion.div
-                key={`${cat.id}-${index}`}
+                key={cat.id}
                 whileHover={{ y: -5 }}
                 transition={{ duration: 0.2 }}
-                className="flex-shrink-0 w-80 sm:w-72 md:w-60 lg:w-80 bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 border border-gray-100 cursor-pointer"
+                className="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 border border-gray-100 cursor-pointer h-[340px] flex flex-col"
                 onClick={() => handleCategoryClick(cat.id)}
               >
-                <div className="flex flex-col h-full">
-                  <div className="relative w-full aspect-square bg-gradient-to-br from-gray-50 to-gray-100 overflow-hidden">
-                    <Image
-                      src={
-                        cat.image
-                          ? `https://marketplace.yuukke.com/assets/uploads/${cat.image}`
-                          : "/gray.jpeg"
-                      }
-                      alt={cat.name}
-                      width={240}
-                      height={240}
-                      className="object-contain w-full h-full transition-transform duration-500 hover:scale-105"
-                    />
-                  </div>
-                  <div className="p-5 flex flex-col flex-grow">
-                    <h3 className="text-lg font-bold text-gray-900 line-clamp-1 mb-2">
-                      {cat.name}
-                    </h3>
-                    <p className="text-sm text-gray-600 line-clamp-2 mb-4 flex-grow">
-                      {cat.description ||
-                        "Discover our exclusive collection of festive hampers."}
+                {/* Image Section */}
+                <div className="relative w-full h-[260px] bg-gradient-to-br from-gray-50 to-gray-100 overflow-hidden">
+                  <Image
+                    src={
+                      cat.image
+                        ? `https://marketplace.yuukke.com/assets/uploads/${cat.image}`
+                        : "/gray.jpeg"
+                    }
+                    alt={cat.name}
+                    fill
+                    className="object-cover transition-transform duration-500 hover:scale-105"
+                  />
+
+                  {/* ✅ Tags Overlay */}
+                  {tags.length > 0 && (
+                    <div className="absolute top-2 left-2 flex flex-wrap gap-2">
+                      {tags.map((tag) => (
+                        <span
+                          key={tag}
+                          className={`flex items-center gap-1 text-xs font-medium px-2 py-1 rounded-full shadow-sm border ${
+                            tag === "Eco"
+                              ? "bg-green-50 text-green-700 border-green-200"
+                              : "bg-red-50 text-red-700 border-purple-200"
+                          }`}
+                        >
+                          {tag === "Eco" && <Leaf className="w-3 h-3" />}
+                          {tag === "Premium" && (
+                            <CircleCheck className="w-3 h-3" />
+                          )}
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  )}
+                </div>
+
+                {/* Content */}
+                <div className="p-3 flex flex-col flex-1">
+                  <h3 className="text-md font-bold text-gray-900 line-clamp-1 mb-1">
+                    {cat.name}
+                  </h3>
+
+                  <p className="text-xs text-gray-600 line-clamp-2 mb-2">
+                    {cat.description
+                      ? cat.description.includes(".")
+                        ? cat.description.split(".")[0] + "."
+                        : cat.description
+                      : "Discover our exclusive collection of festive hampers."}
+                  </p>
+                  <div className="mt-auto flex justify-between items-center">
+                    <p className="text-md text-gray-900 flex items-center">
+                      From{" "}
+                      <span className="ml-1 text-[#a00300] font-bold">
+                        ₹ {price}
+                      </span>
                     </p>
+                    <button className="flex items-center text-xs font-medium text-[#a00300] hover:text-red-800 transition-colors">
+                      View
+                      <ArrowRight className="h-4 w-4 ml-1" strokeWidth={2} />
+                    </button>
                   </div>
                 </div>
               </motion.div>
-            ))}
-          </div>
-
-          {/* Right Arrow (mobile only) */}
-          <button
-            onClick={() => handleScroll("right")}
-            className="absolute right-0 top-1/2 -translate-y-1/2 bg-white p-2 rounded-full shadow-md md:hidden z-10"
-          >
-            <ChevronRight className="w-6 h-6 text-gray-700" />
-          </button>
+            );
+          })}
         </div>
       )}
-      {/* ⬇️ The power bar goes here, full width & centered */}
+
+      {/* Stats Section */}
       <div className="mt-16 text-center text-gray-400 mb-6">
         <div className="grid grid-cols-2 sm:flex sm:justify-center sm:items-center sm:gap-32 gap-y-10 gap-x-0">
           {/* Stat 1 */}

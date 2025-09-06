@@ -62,14 +62,14 @@ export default function WhyChooseYuukke() {
                 key={idx}
                 className="bg-neutral-50 rounded-xl shadow-sm overflow-hidden border border-gray-100 max-w-sm mx-auto transition-transform duration-500 hover:scale-[1.02] hover:shadow-[0_12px_24px_-6px_rgba(120,120,120,0.25)]"
               >
-                <div className="relative h-80 w-full overflow-hidden">
+                {/* <div className="relative h-80 w-full overflow-hidden">
                   <Image
                     src={item.img}
                     alt={item.title}
                     fill
                     className="object-cover transition-transform duration-500 ease-in-out scale-100 hover:scale-110"
                   />
-                </div>
+                </div> */}
 
                 <div className="p-6 text-left">
                   <div className="flex items-center gap-2 mb-2">
@@ -108,14 +108,14 @@ export default function WhyChooseYuukke() {
                   key={idx}
                   className="bg-neutral-50 rounded-xl shadow-sm overflow-hidden border border-gray-100 min-w-[85%] snap-center transition-transform duration-500 hover:scale-[1.02] hover:shadow-[0_12px_24px_-6px_rgba(120,120,120,0.25)]"
                 >
-                  <div className="relative h-72 w-full overflow-hidden">
+                  {/* <div className="relative h-72 w-full overflow-hidden">
                     <Image
                       src={item.img}
                       alt={item.title}
                       fill
                       className="object-cover transition-transform duration-500 ease-in-out scale-100 hover:scale-110"
                     />
-                  </div>
+                  </div> */}
 
                   <div className="p-6 text-left">
                     <div className="flex items-center gap-2 mb-2">
