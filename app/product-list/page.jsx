@@ -192,6 +192,51 @@ function ProductListInner() {
       price: 350000, // ₹4,500 in paise for Razorpay
       image: "/product-list/s9.jpg",
     },
+    899: {
+      name: "Eco Luxe Workday Kit Hamper",
+      title: "Eco Luxe Workday Kit Hamper",
+      description:
+        "Elevate your corporate gifting with the Eco Luxe Workday Kit — a premium, thoughtfully curated bundle featuring a cork-finish laptop bag, eco journal, eco mug, and coasters. Perfect for teams that value impact as much as excellence, this kit combines elegance with eco-conscious utility.",
+      tagline: "Crafted with care. Gifted with intent.",
+      features: [
+        "Premium Curation – Handpicked eco-luxe essentials for high-end gifting",
+        "Sustainable & Stylish – Crafted with environmentally responsible materials",
+        "Perfect for CXOs & VIPs – Leaves a sophisticated and lasting impression",
+        "Corporate Elegance – A thoughtful blend of sustainability and exclusivity",
+      ],
+      price: 290000, // ₹4,500 in paise for Razorpay
+      image: "/product-list/s898.jpg",
+    },
+    900: {
+      name: "The Prosperity Box",
+      title: "The Prosperity Box",
+      description:
+        "Designed for discerning professionals, The Prosperity Box is the ideal corporate gift — combining cultural symbolism with premium quality. Perfect for expressing appreciation, strengthening partnerships, and building goodwill this festive season.",
+      tagline: "Celebrate Partnership. Gift Prosperity",
+      features: [
+        "Cultural Symbolism – Infused with traditional motifs that signify prosperity and goodwill",
+        "Premium Quality – A sophisticated selection of high-end essentials curated for elegance",
+        "Corporate Appreciation – Ideal for expressing gratitude and strengthening business ties",
+        "Festive Elegance – Perfectly designed to celebrate occasions with class and charm",
+      ],
+      price: 125000, // ₹4,500 in paise for Razorpay
+      image: "/product-list/s70.png",
+    },
+    901: {
+      name: "Eco-Excellence Kit",
+      title: "Eco-Excellence Kit",
+      description:
+        "Celebrate your team with a gift that blends purpose and practicality — featuring a Cork Journal, Eco Mug, Cork Pen, and Coaster. Each piece is thoughtfully designed to reflect eco- conscious living while honoring high achievers.",
+      tagline: "Reward performance, the sustainable way.",
+      features: [
+        "Eco-Friendly Essentials – Includes a Cork Journal, Eco Mug, Pen, and Coaster",
+        "Sustainable Gifting – Thoughtfully crafted with environmentally conscious materials",
+        "Purposeful & Practical – Everyday utility items with a premium eco-touch",
+        "Recognition with Responsibility – Perfect for honoring achievers while promoting green values",
+      ],
+      price: 150000, // ₹4,500 in paise for Razorpay
+      image: "/2.jpeg",
+    },
 
     default: {
       name: "Premium Gifts",
@@ -230,62 +275,6 @@ function ProductListInner() {
         rating: 4.8,
         image: "/product-list/coffeemugblack.png",
       },
-      // {
-      //   id: 11,
-      //   name: "Premium Coffee Mug - sandal",
-      //   description: "Selection of finest coffee beans and accessories",
-      //   price: "₹2,299",
-      //   rating: 4.7,
-      //   image: "/product-list/coffeemugsandal.png",
-      // },
-      // {
-      //   id: 4,
-      //   name: "Gourmet Coffee Hamper",
-      //   description: "Selection of finest coffee beans and accessories",
-      //   price: "₹2,299",
-      //   rating: 4.7,
-      //   image: "/product-list/14.jpg",
-      // },
-      // {
-      //   id: 5,
-      //   name: "Gourmet Coffee Hamper",
-      //   description: "Selection of finest coffee beans and accessories",
-      //   price: "₹2,299",
-      //   rating: 4.7,
-      //   image: "/product-list/13.jpg",
-      // },
-      // {
-      //   id: 6,
-      //   name: "Gourmet Coffee Hamper",
-      //   description: "Selection of finest coffee beans and accessories",
-      //   price: "₹2,299",
-      //   rating: 4.7,
-      //   image: "/product-list/12.jpg",
-      // },
-      // {
-      //   id: 7,
-      //   name: "Gourmet Coffee Hamper",
-      //   description: "Selection of finest coffee beans and accessories",
-      //   price: "₹2,299",
-      //   rating: 4.7,
-      //   image: "/product-list/11.jpg",
-      // },
-      // {
-      //   id: 8,
-      //   name: "Gourmet Coffee Hamper",
-      //   description: "Selection of finest coffee beans and accessories",
-      //   price: "₹2,299",
-      //   rating: 4.7,
-      //   image: "/product-list/10.jpg",
-      // },
-      // {
-      //   id: 9,
-      //   name: "Gourmet Coffee Hamper",
-      //   description: "Selection of finest coffee beans and accessories",
-      //   price: "₹2,299",
-      //   rating: 4.7,
-      //   image: "/product-list/9.jpg",
-      // },
       {
         id: 10,
         name: "Gourmet Coffee Hamper",
@@ -587,6 +576,132 @@ function ProductListInner() {
         image: "/product-list/s10.jpg",
       },
     ],
+    899: [
+      {
+        id: 1,
+        name: "Wine & Cheese Set",
+        description: "Fine wine paired with artisan cheeses",
+        price: "₹4,299",
+        rating: 4.8,
+        image: "/product-list/s898.jpg",
+      },
+      {
+        id: 2,
+        name: "Wine & Cheese Set",
+        description: "Fine wine paired with artisan cheeses",
+        price: "₹4,299",
+        rating: 4.8,
+        image: "/product-list/8981.jpg",
+      },
+      {
+        id: 5,
+        name: "Wine & Cheese Set",
+        description: "Fine wine paired with artisan cheeses",
+        price: "₹4,299",
+        rating: 4.8,
+        image: "/product-list/s7.jpg",
+      },
+      {
+        id: 3,
+        name: "Wine & Cheese Set",
+        description: "Fine wine paired with artisan cheeses",
+        price: "₹4,299",
+        rating: 4.8,
+        image: "/product-list/8982.jpg",
+      },
+      {
+        id: 4,
+        name: "Wine & Cheese Set",
+        description: "Fine wine paired with artisan cheeses",
+        price: "₹4,299",
+        rating: 4.8,
+        image: "/product-list/8983.jpg",
+      },
+      {
+        id: 4,
+        name: "Wine & Cheese Set",
+        description: "Fine wine paired with artisan cheeses",
+        price: "₹4,299",
+        rating: 4.8,
+        image: "/product-list/8995.png",
+      },
+    ],
+    900: [
+      {
+        id: 1,
+        name: "Wine & Cheese Set",
+        description: "Fine wine paired with artisan cheeses",
+        price: "₹4,299",
+        rating: 4.8,
+        image: "/product-list/s70.png",
+      },
+      {
+        id: 2,
+        name: "Wine & Cheese Set",
+        description: "Fine wine paired with artisan cheeses",
+        price: "₹4,299",
+        rating: 4.8,
+        image: "/product-list/s9001.png",
+      },
+      {
+        id: 3,
+        name: "Wine & Cheese Set",
+        description: "Fine wine paired with artisan cheeses",
+        price: "₹4,299",
+        rating: 4.8,
+        image: "/product-list/s9002.png",
+      },
+      {
+        id: 4,
+        name: "Wine & Cheese Set",
+        description: "Fine wine paired with artisan cheeses",
+        price: "₹4,299",
+        rating: 4.8,
+        image: "/product-list/mixednuts.png",
+      },
+    ],
+    901: [
+      {
+        id: 1,
+        name: "Wine & Cheese Set",
+        description: "Fine wine paired with artisan cheeses",
+        price: "₹4,299",
+        rating: 4.8,
+        image: "/2.jpeg",
+      },
+      {
+        id: 2,
+        name: "Wine & Cheese Set",
+        description: "Fine wine paired with artisan cheeses",
+        price: "₹4,299",
+        rating: 4.8,
+        image: "/product-list/s9011.jpg",
+      },
+      {
+        id: 3,
+        name: "Wine & Cheese Set",
+        description: "Fine wine paired with artisan cheeses",
+        price: "₹4,299",
+        rating: 4.8,
+        image: "/product-list/s2.jpg",
+      },
+      {
+        id: 4,
+        name: "Wine & Cheese Set",
+        description: "Fine wine paired with artisan cheeses",
+        price: "₹4,299",
+        rating: 4.8,
+        image: "/product-list/s9013.jpg",
+      },
+      // {
+      //   id: 5,
+      //   name: "Wine & Cheese Set",
+      //   description: "Fine wine paired with artisan cheeses",
+      //   price: "₹4,299",
+      //   rating: 4.8,
+      //   image: "/product-list/s9014.png",
+      // },
+    ],
     // Default products for any category
     default: [
       {
@@ -657,6 +772,19 @@ function ProductListInner() {
       "Set of 2 Small Diyas ",
       "Personalized Greeting Card",
     ],
+    "Eco Luxe Workday Kit Hamper": [
+      "Cork finish Laptop Bag",
+      "Bamboo Water Bottle",
+      "Eco Journal",
+      "Eco Mug",
+      "Premium Bamboo Coasters",
+    ],
+    "The Prosperity Box": [
+      "Metal Lakshmi Ganesha Diya holder with wooden base",
+      "Mixed Dry Fruits 100gm",
+      "Embellished Pichwai Theme wall hanging",
+    ],
+    "Eco-Excellence Kit": ["Cork Journal", "Eco Mug", "Cork Pen", "Coaster"],
   };
 
   useEffect(() => {
@@ -701,6 +829,13 @@ function ProductListInner() {
 
   const defaultCatalogue =
     currentCategoryContent?.title || currentCategoryContent;
+
+  // 🛠 Debugging logs
+  // console.group("📝 Category Debug Logs");
+  // console.log("Selected Category ID:", category?.id);
+  // console.log("Current Category Content:", currentCategoryContent);
+  // console.log("Resolved Default Catalogue:", defaultCatalogue);
+  // console.groupEnd();
 
   useEffect(() => {
     if (!currentCategoryContent?.name) {
@@ -852,12 +987,14 @@ function ProductListInner() {
             {/* Mobile Price & Checkout Section */}
             <div className="flex md:hidden flex-col w-full mt-4 space-y-3">
               {/* Price Section */}
-              <div>
-                <p className="text-2xl font-bold text-[#a00300]">
-                  ₹ {(currentCategoryContent.price / 100).toFixed(2)}
+              <div className="mb-6">
+                <p className="text-3xl font-bold text-gray-900">
+                  ₹{" "}
+                  {((currentCategoryContent.price / 100) * quantity).toFixed(2)}
                 </p>
-                <p className="text-xs text-gray-500">
-                  (TAX included · FREE Shipping)
+                <p className="text-sm text-gray-500 mt-1">
+                  (₹ {(currentCategoryContent.price / 100).toFixed(2)} per item
+                  · TAX included · FREE Shipping)
                 </p>
               </div>
 
@@ -906,7 +1043,7 @@ function ProductListInner() {
                   isOpen={isOpen}
                   onClose={() => setIsOpen(false)}
                   mode={formMode}
-                  defaultCatalogue={currentCategoryContent.title} // ✅ pass title here
+                  defaultCatalogue={defaultCatalogue} // ✅ Use the derived variable directly
                 />
               </div>
               {categoryContentsMap[currentCategoryContent?.name] && (
@@ -1186,10 +1323,12 @@ function ProductListInner() {
               {/* Price Section */}
               <div className="mb-6">
                 <p className="text-3xl font-bold text-gray-900">
-                  ₹ {(currentCategoryContent.price / 100).toFixed(2)}
+                  ₹{" "}
+                  {((currentCategoryContent.price / 100) * quantity).toFixed(2)}
                 </p>
                 <p className="text-sm text-gray-500 mt-1">
-                  (TAX included · FREE Shipping)
+                  (₹ {(currentCategoryContent.price / 100).toFixed(2)} per item
+                  · TAX included · FREE Shipping)
                 </p>
               </div>
 
@@ -1263,7 +1402,7 @@ function ProductListInner() {
                   isOpen={isOpen}
                   onClose={() => setIsOpen(false)}
                   mode={formMode}
-                  defaultCatalogue={currentCategoryContent.title} // ✅ pass title here
+                  defaultCatalogue={defaultCatalogue} // ✅ Use the derived variable directly
                 />
               </div>
             </div>
@@ -1357,6 +1496,7 @@ function ProductListInner() {
         product={selectedProduct}
         category={category}
         categoryContent={currentCategoryContent}
+        defaultCatalogue={defaultCatalogue}
       />
     </div>
   );

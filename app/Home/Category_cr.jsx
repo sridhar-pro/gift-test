@@ -56,7 +56,7 @@ export default function CategoryCr() {
         }
 
         const data = await response.json();
-        // console.log("data", data);
+        console.log("data", data);
         setCategories(Array.isArray(data?.data) ? data.data : []);
       } catch (error) {
         console.error("Error fetching categories:", error);
@@ -243,7 +243,7 @@ export default function CategoryCr() {
           {/* Stat 2 */}
           <div>
             <p className="text-3xl font-extrabold text-[hsl(25,50%,30%)]">
-              15-45 Business Days
+              20-25 Business Days
             </p>
             <p className="text-md">Delivery Time</p>
           </div>

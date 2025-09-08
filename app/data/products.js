@@ -570,6 +570,52 @@ export const categoryContent = {
     price: 350000, // ₹4,500 in paise for Razorpay
     image: "/product-list/s9.jpg",
   },
+  899: {
+    name: "Eco Luxe Workday Kit Hamper",
+    title: "Eco Luxe Workday Kit Hamper",
+    description:
+      "Elevate your corporate gifting with the Eco Luxe Workday Kit — a premium, thoughtfully curated bundle featuring a cork-finish laptop bag, eco journal, eco mug, and coasters. Perfect for teams that value impact as much as excellence, this kit combines elegance with eco-conscious utility.",
+    tagline: "Crafted with care. Gifted with intent.",
+    features: [
+      "Premium Curation – Handpicked eco-luxe essentials for high-end gifting",
+      "Sustainable & Stylish – Crafted with environmentally responsible materials",
+      "Perfect for CXOs & VIPs – Leaves a sophisticated and lasting impression",
+      "Corporate Elegance – A thoughtful blend of sustainability and exclusivity",
+    ],
+    price: 290000, // ₹4,500 in paise for Razorpay
+    image: "/product-list/s9.jpg",
+  },
+  900: {
+    name: "The Prosperity Box",
+    title: "The Prosperity Box",
+    description:
+      "Designed for discerning professionals, The Prosperity Box is the ideal corporate gift — combining cultural symbolism with premium quality. Perfect for expressing appreciation, strengthening partnerships, and building goodwill this festive season.",
+    tagline: "Celebrate Partnership. Gift Prosperity",
+    features: [
+      "Premium Curation – Handpicked eco-luxe essentials for high-end gifting",
+      "Sustainable & Stylish – Crafted with environmentally responsible materials",
+      "Perfect for CXOs & VIPs – Leaves a sophisticated and lasting impression",
+      "Corporate Elegance – A thoughtful blend of sustainability and exclusivity",
+    ],
+    price: 125000, // ₹4,500 in paise for Razorpay
+    image: "/product-list/s70.png",
+  },
+
+  901: {
+    name: "Eco-Excellence Kit",
+    title: "Eco-Excellence Kit",
+    description:
+      "Celebrate your team with a gift that blends purpose and practicality — featuring a Cork Journal, Eco Mug, Cork Pen, and Coaster. Each piece is thoughtfully designed to reflect eco- conscious living while honoring high achievers.",
+    tagline: "Celebrate Partnership. Gift Prosperity",
+    features: [
+      "Premium Curation – Handpicked eco-luxe essentials for high-end gifting",
+      "Sustainable & Stylish – Crafted with environmentally responsible materials",
+      "Perfect for CXOs & VIPs – Leaves a sophisticated and lasting impression",
+      "Corporate Elegance – A thoughtful blend of sustainability and exclusivity",
+    ],
+    price: 125000, // ₹4,500 in paise for Razorpay
+    image: "/2.jpeg",
+  },
 
   default: {
     name: "Premium Gifts",

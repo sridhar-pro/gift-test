@@ -19,6 +19,7 @@ const PopupForm = ({
   category,
   categoryContent,
   inline = false,
+  defaultCatalogue,
 }) => {
   const router = useRouter();
 
@@ -33,6 +34,8 @@ const PopupForm = ({
     }
   }, []);
 
+  // console.log("🟢 PopupForm defaultCatalogue:", defaultCatalogue);
+
   const [formData, setFormData] = useState({
     name: "",
     phone: "",
@@ -46,7 +49,7 @@ const PopupForm = ({
     budget: "",
     quantity: "",
     prebookingType: "order", // Changed from "quotation" to "order"
-    catalogue: category?.id || "", // Set to category ID
+    catalogue: defaultCatalogue ?? categoryContent?.title ?? "",
   });
 
   const [loading, setLoading] = useState(false);
@@ -100,7 +103,7 @@ const PopupForm = ({
         budget: "",
         quantity: "",
         prebookingType: "order",
-        catalogue: category?.id || "",
+        catalogue: defaultCatalogue ?? categoryContent?.title ?? "",
       });
       setPaymentSuccess(false);
       setInsertedId(null);
@@ -111,7 +114,7 @@ const PopupForm = ({
     return () => {
       document.body.style.overflow = "unset";
     };
-  }, [isOpen, category]);
+  }, [isOpen, category, defaultCatalogue, categoryContent?.title]);
 
   const handleChange = (e) => {
     setFormData({
@@ -284,6 +287,8 @@ const PopupForm = ({
               .join(", ")
           : selectedContents.join(", "), // For other categories, send only default contents
       };
+
+      // console.log("Body", requestBody);
 
       // 3. Call our API proxy
       const response = await fetch("/api/save_prebook_gift", {

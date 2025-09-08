@@ -91,13 +91,13 @@ export default function RelatedCategories() {
         <>
           <button
             onClick={() => scrollRef("left")}
-            className="absolute -left-2 top-1/2 -translate-y-1/2 z-10 p-2 rounded-full bg-white shadow-lg hover:bg-gray-50 transition md:hidden"
+            className="absolute -left-2 top-1/2 -translate-y-1/2 z-10 p-2 rounded-full bg-white shadow-lg hover:bg-gray-50 transition "
           >
             <ChevronLeft className="h-5 w-5 text-gray-700" />
           </button>
           <button
             onClick={() => scrollRef("right")}
-            className="absolute -right-2 top-1/2 -translate-y-1/2 z-10 p-2 rounded-full bg-white shadow-lg hover:bg-gray-50 transition md:hidden"
+            className="absolute -right-2 top-1/2 -translate-y-1/2 z-10 p-2 rounded-full bg-white shadow-lg hover:bg-gray-50 transition "
           >
             <ChevronRight className="h-5 w-5 text-gray-700" />
           </button>

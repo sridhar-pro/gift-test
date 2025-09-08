@@ -12,7 +12,7 @@ const PopupForm = ({ isOpen, onClose, mode, defaultCatalogue }) => {
     giftingFor: "",
     budget: "",
     quantity: "",
-    catalogue: defaultCatalogue || "",
+    catalogue: defaultCatalogue ?? "",
   });
 
   const [loading, setLoading] = useState(false);
@@ -43,7 +43,7 @@ const PopupForm = ({ isOpen, onClose, mode, defaultCatalogue }) => {
         giftingFor: "",
         budget: "",
         quantity: "",
-        catalogue: defaultCatalogue || "",
+        catalogue: defaultCatalogue ?? "",
       });
       setPaymentSuccess(false);
       setInsertedId(null);
@@ -185,6 +185,8 @@ const PopupForm = ({ isOpen, onClose, mode, defaultCatalogue }) => {
         prebookingType: mode, // Pass mode directly here
         catalogue: formData.catalogue,
       };
+
+      // console.log("request-body", requestBody);
 
       const response = await fetch("/api/save_prebook_gift", {
         method: "POST",
