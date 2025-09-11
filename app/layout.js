@@ -5,8 +5,9 @@ import FloatingQueryButton from "./components/FloatingQueryButton";
 import Script from "next/script";
 
 export const metadata = {
-  title: "Gifts - Yuukke",
-  description: "Build your own hamper",
+  title: "Premium Festive & Corporate Hampers | Yuukke Gifting",
+  description:
+    "Celebrate every occasion with Yuukke’s festive & corporate hampers. Unique, handcrafted & thoughtful gifts for Diwali, Christmas, New Year & business gifting. Delight clients, teams & family with curated hampers. Shop online today!",
 };
 
 export default function RootLayout({ children }) {

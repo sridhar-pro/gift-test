@@ -1,80 +1,108 @@
 "use client";
 import { Suspense, useEffect, useState } from "react";
 import Image from "next/image";
-import { motion, AnimatePresence } from "framer-motion";
-import {
-  ArrowLeft,
-  Star,
-  ShoppingCart,
-  MessageCircle,
-  Minus,
-  Plus,
-  ArrowRight,
-} from "lucide-react";
-import { useRouter, useSearchParams } from "next/navigation";
-import PopupForm from "../components/PopupForm2"; // Import the form component
+import { motion } from "framer-motion";
+import { useRouter, useParams } from "next/navigation";
+import PopupForm from "../components/PopupForm2";
 import Related from "../Home/Related";
 import PopupForm1 from "../components/PopupForm";
+import { categoryContent } from "../data/products"; // ✅ Import your static content
 
 function ProductListInner() {
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const [quantity, setQuantity] = useState(1);
-
-  const [isOpen, setIsOpen] = useState(false);
-  const [formMode, setFormMode] = useState("quotation");
-
-  const increaseQuantity = () =>
-    setQuantity((prev) => (prev < 10 ? prev + 1 : 10));
-
-  const decreaseQuantity = () =>
-    setQuantity((prev) => (prev > 1 ? prev - 1 : 1));
-
-  const [isPopupOpen, setIsPopupOpen] = useState(false);
-
-  const openPopup = () => setIsPopupOpen(true);
-  const closePopup = () => setIsPopupOpen(false);
+  const params = useParams();
+  const slug = params?.slug; // ✅ Always defined now
 
   const [category, setCategory] = useState(null);
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [activeImg, setActiveImg] = useState(null);
+  const [quantity, setQuantity] = useState(1);
   const [showForm, setShowForm] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
 
-  const [selectedOption, setSelectedOption] = useState(null);
-  const [selectedVariant, setSelectedVariant] = useState(null);
-  const [savedVariants, setSavedVariants] = useState(() => {
-    // Load previously saved variants from localStorage on mount
-    if (typeof window !== "undefined") {
-      return JSON.parse(localStorage.getItem("selectedVariants")) || {};
-    }
-    return {};
-  });
-  // useEffect(() => {
-  //   console.log("Saved Variants:", savedVariants);
-  // }, [savedVariants]);
+  // ✅ Utility: slugify function for consistent comparison
+  const slugify = (text) =>
+    text
+      ?.toString()
+      ?.toLowerCase()
+      ?.trim()
+      ?.replace(/\s+/g, "-")
+      ?.replace(/[^\w\-]+/g, "")
+      ?.replace(/\-\-+/g, "-");
 
-  // Flatten all product images into a single gallery array
-  // Compute all images based on current products
+  // ✅ Find matching category by name instead of ID
+  const findCategoryBySlug = (slug) => {
+    for (const [id, content] of Object.entries(categoryContent)) {
+      if (slugify(content.name) === slug) {
+        return { id, ...content };
+      }
+    }
+    return null;
+  };
+
+  useEffect(() => {
+    if (!slug) return;
+
+    try {
+      setLoading(true);
+
+      // ✅ Find the category based on slug
+      const matchedCategory = findCategoryBySlug(slug);
+
+      if (!matchedCategory) {
+        console.warn(`❌ No category found for slug: ${slug}`);
+        router.push("/"); // fallback to home if slug is invalid
+        return;
+      }
+
+      setCategory(matchedCategory);
+
+      // ✅ Fetch products based on category name instead of ID
+      // You can replace this with API call if products are dynamic
+      setProducts(staticProducts[matchedCategory.id] || staticProducts.default);
+
+      // ✅ Save selected category for later use
+      localStorage.setItem("selectedCategoryId", matchedCategory.id);
+    } catch (err) {
+      console.error("Error initializing page:", err);
+    } finally {
+      setLoading(false);
+    }
+  }, [slug, router]);
+
+  const currentCategoryContent =
+    categoryContent[category?.id] || categoryContent["default"];
+
   const allImages = products.flatMap((p) =>
     p.images?.length > 0 ? p.images : [p.image]
   );
 
-  // State for active hero image
-  const [activeImg, setActiveImg] = useState(allImages[0] || null);
-
-  // Whenever products change (new category), reset activeImg to first image
   useEffect(() => {
     if (allImages.length > 0) {
-      setActiveImg(allImages[0]); // reset to first image of new category
+      setActiveImg(allImages[0]);
     } else {
       setActiveImg(null);
     }
-  }, [products]); // <-- notice we watch `products`, not `allImages`
+  }, [products]);
 
-  // Then the thumbnail click handler
-  const handleThumbnailClick = (img) => {
-    setActiveImg(img); // allows user to pick any thumbnail
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#A00030]"></div>
+      </div>
+    );
+  }
+
+  const handleCheckout = () => {
+    const payload = {
+      product: selectedProduct,
+      category,
+      categoryContent: currentCategoryContent,
+      quantity,
+    };
+    sessionStorage.setItem("checkoutData", JSON.stringify(payload));
+    router.push("/checkout");
   };
 
   // Category content data
@@ -785,115 +813,6 @@ function ProductListInner() {
       "Embellished Pichwai Theme wall hanging",
     ],
     "Eco-Excellence Kit": ["Cork Journal", "Eco Mug", "Cork Pen", "Coaster"],
-  };
-
-  useEffect(() => {
-    const initializePage = () => {
-      try {
-        setLoading(true);
-
-        const queryCategoryId = searchParams.get("categoryId");
-        const storedCategoryId = localStorage.getItem("selectedCategoryId");
-        const categoryId = queryCategoryId || storedCategoryId;
-
-        if (!categoryId) {
-          router.push("/"); // redirect if no category
-          return;
-        }
-
-        // Update state
-        setCategory({
-          id: categoryId,
-          name:
-            categoryContent[categoryId]?.name ||
-            categoryContent["default"].name,
-        });
-
-        // Save to localStorage (keeps consistency)
-        localStorage.setItem("selectedCategoryId", categoryId);
-
-        // Get products
-        setProducts(staticProducts[categoryId] || staticProducts.default);
-      } catch (err) {
-        console.error(err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    initializePage();
-  }, [router, searchParams]);
-
-  const currentCategoryContent =
-    categoryContent[category?.id] || categoryContent["default"];
-
-  const defaultCatalogue =
-    currentCategoryContent?.title || currentCategoryContent;
-
-  // 🛠 Debugging logs
-  // console.group("📝 Category Debug Logs");
-  // console.log("Selected Category ID:", category?.id);
-  // console.log("Current Category Content:", currentCategoryContent);
-  // console.log("Resolved Default Catalogue:", defaultCatalogue);
-  // console.groupEnd();
-
-  useEffect(() => {
-    if (!currentCategoryContent?.name) {
-      console.log("❌ No current category content to store");
-      return;
-    }
-
-    // Save the current category content
-    localStorage.setItem(
-      "selectedCategoryContent",
-      JSON.stringify(currentCategoryContent)
-    );
-
-    // console.log("✅ Saved selected category content:", currentCategoryContent);
-  }, [currentCategoryContent]);
-
-  useEffect(() => {
-    if (!currentCategoryContent?.name) return;
-
-    const contents = categoryContentsMap[currentCategoryContent.name];
-    if (contents) {
-      localStorage.setItem("selectedContents", JSON.stringify(contents));
-    }
-  }, [currentCategoryContent?.name]);
-
-  const handleBack = () => {
-    router.back();
-  };
-
-  const handleAddToCart = (productId) => {
-    // console.log("Added product to cart:", productId);
-    // Add your cart logic here
-  };
-
-  const handleOrderNow = () => {
-    // Set selectedProduct to null since we're ordering the entire category
-    setSelectedProduct(null);
-    setShowForm(true);
-  };
-
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#A00030]"></div>
-      </div>
-    );
-  }
-
-  const handleCheckout = () => {
-    const payload = {
-      product: selectedProduct,
-      category,
-      categoryContent: currentCategoryContent,
-      quantity, // ✅ Include quantity
-    };
-
-    sessionStorage.setItem("checkoutData", JSON.stringify(payload));
-    router.push("/checkout");
   };
 
   return (

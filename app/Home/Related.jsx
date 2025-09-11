@@ -6,12 +6,25 @@ import { motion } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useRouter } from "next/navigation";
 
+// 👉 util to make clean slugs
+const slugify = (text) =>
+  text
+    .toString()
+    .toLowerCase()
+    .trim()
+    .replace(/\s+/g, "-") // spaces → dashes
+    .replace(/[^\w\-]+/g, "") // remove special chars
+    .replace(/\-\-+/g, "-"); // collapse multiple dashes
+
 export default function RelatedCategories() {
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const router = useRouter();
-  const currentCategoryId = localStorage.getItem("selectedCategoryId");
+  const currentCategoryId =
+    typeof window !== "undefined"
+      ? localStorage.getItem("selectedCategoryId")
+      : null;
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -48,7 +61,7 @@ export default function RelatedCategories() {
 
         const data = await response.json();
         const filtered = (Array.isArray(data?.data) ? data.data : []).filter(
-          (cat) => cat.id !== currentCategoryId
+          (cat) => String(cat.id) !== String(currentCategoryId) // prevent type mismatch
         );
 
         setCategories(filtered);
@@ -63,8 +76,10 @@ export default function RelatedCategories() {
     fetchCategories();
   }, [currentCategoryId]);
 
-  const handleCategoryClick = (categoryId) => {
-    router.push(`/product-list?categoryId=${categoryId}`);
+  const handleCategoryClick = (cat) => {
+    const slug = slugify(cat.name);
+    localStorage.setItem("selectedCategoryId", cat.id); // keep ID
+    router.push(`/product-list/${slug}`); // slug-based route
   };
 
   const scrollRef = (direction) => {
@@ -116,7 +131,7 @@ export default function RelatedCategories() {
             whileHover={{ y: -5 }}
             transition={{ duration: 0.2 }}
             className="flex-shrink-0 w-48 sm:w-52 md:w-48 lg:w-52 bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 border border-gray-100 cursor-pointer"
-            onClick={() => handleCategoryClick(cat.id)}
+            onClick={() => handleCategoryClick(cat)}
           >
             <div className="flex flex-col h-full">
               <div className="relative w-full aspect-square bg-gradient-to-br from-gray-50 to-gray-100 overflow-hidden">

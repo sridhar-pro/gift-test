@@ -6,18 +6,12 @@ import PopupForm from "../components/PopupForm2";
 
 export default function CheckoutPage() {
   const [checkoutData, setCheckoutData] = useState(null);
-  const [selectedCategoryContent, setSelectedCategoryContent] = useState(null);
   const [selectedContents, setSelectedContents] = useState([]);
   const [quantity, setQuantity] = useState(1);
   const [loading, setLoading] = useState(true);
   const leftSectionRef = useRef(null);
 
   useEffect(() => {
-    const storedContent = localStorage.getItem("selectedCategoryContent");
-    if (storedContent) {
-      setSelectedCategoryContent(JSON.parse(storedContent));
-    }
-
     const stored = sessionStorage.getItem("checkoutData");
     if (stored) {
       const parsed = JSON.parse(stored);
@@ -30,7 +24,7 @@ export default function CheckoutPage() {
       setSelectedContents(JSON.parse(storedContents));
     }
 
-    setLoading(false); // ✅ done checking storage
+    setLoading(false);
   }, []);
 
   // Scroll-lock logic
@@ -62,7 +56,7 @@ export default function CheckoutPage() {
   }
 
   // ✅ Empty Checkout Fallback
-  if (!checkoutData || !selectedCategoryContent) {
+  if (!checkoutData || !checkoutData.categoryContent) {
     return (
       <div className="min-h-[85vh] flex flex-col items-center justify-center bg-gray-50 px-6 text-center font-gift">
         <Image
@@ -91,11 +85,23 @@ export default function CheckoutPage() {
 
   // ✅ Normal Checkout Flow
   const { product, category, categoryContent } = checkoutData;
-  const unitPrice = selectedCategoryContent
-    ? selectedCategoryContent.price / 100
+
+  const unitPrice = categoryContent?.price
+    ? categoryContent.price / 100
+    : product?.price
+    ? product.price / 100
     : 0;
 
   const totalPrice = (unitPrice * quantity).toFixed(2);
+
+  // ✅ Fetch checkout data with clear variable names
+  const checkoutInfo = JSON.parse(sessionStorage.getItem("checkoutData")) || {};
+  const packageVariants = checkoutInfo?.selectedVariants || {};
+  const packageContents = checkoutInfo?.selectedContents || [];
+
+  // ✅ Special case for Signature Conscious hamper
+  const isSignaturePackage =
+    checkoutInfo?.categoryContent?.name === "Signature Consicious";
 
   return (
     <div className="min-h-screen bg-gray-50 flex justify-center font-gift">
@@ -111,20 +117,20 @@ export default function CheckoutPage() {
               <div className="flex flex-col items-center text-center">
                 <Image
                   src={
-                    selectedCategoryContent?.image
-                      ? selectedCategoryContent.image.startsWith("/")
-                        ? selectedCategoryContent.image
-                        : `https://marketplace.yuukke.com/assets/uploads/${selectedCategoryContent.image}`
-                      : "/product.png"
+                    categoryContent?.image
+                      ? categoryContent.image.startsWith("/")
+                        ? categoryContent.image
+                        : `https://marketplace.yuukke.com/assets/uploads/${categoryContent.image}`
+                      : product?.image || "/product.png"
                   }
-                  alt={selectedCategoryContent?.name || "Product"}
+                  alt={categoryContent?.name || product?.name || "Product"}
                   width={180}
                   height={180}
                   className="rounded-2xl border border-gray-200 shadow-lg mb-4 object-cover"
                 />
 
                 <p className="text-lg font-semibold text-gray-900">
-                  {selectedCategoryContent?.name || "Product"}
+                  {categoryContent?.name || product?.name || "Product"}
                 </p>
                 <p className="text-sm text-gray-600 mt-1">
                   Quantity: <span className="font-semibold">{quantity}</span>
@@ -134,19 +140,24 @@ export default function CheckoutPage() {
                 </p>
               </div>
 
-              {selectedContents?.length > 0 && (
+              {/* ✅ Package Contents Section */}
+              {packageContents?.length > 0 && (
                 <div className="bg-gradient-to-br from-gray-50 to-white rounded-xl border border-gray-100 shadow-inner p-5 mt-8">
                   <h3 className="text-lg font-semibold text-gray-900 mb-4 text-center">
                     This package consists of:
                   </h3>
                   <ul className="space-y-3">
-                    {selectedContents.map((item, idx) => (
+                    {packageContents.map((item, idx) => (
                       <li
                         key={idx}
                         className="flex items-center space-x-3 text-gray-700 hover:text-[#a00300] transition-colors duration-300"
                       >
                         <span className="w-2.5 h-2.5 bg-[#a00300] rounded-full"></span>
-                        <span className="text-sm leading-tight">{item}</span>
+                        <span className="text-sm leading-tight">
+                          {isSignaturePackage
+                            ? packageVariants[item] || item
+                            : item}
+                        </span>
                       </li>
                     ))}
                   </ul>

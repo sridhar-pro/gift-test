@@ -56,7 +56,7 @@ export default function CategoryCr() {
         }
 
         const data = await response.json();
-        console.log("data", data);
+        // console.log("data", data);
         setCategories(Array.isArray(data?.data) ? data.data : []);
       } catch (error) {
         console.error("Error fetching categories:", error);
@@ -69,10 +69,21 @@ export default function CategoryCr() {
     fetchCategories();
   }, []);
 
+  // Utility: Convert category name to slug
+  const slugify = (text) =>
+    text
+      .toString()
+      .toLowerCase()
+      .trim()
+      .replace(/\s+/g, "-") // spaces → dashes
+      .replace(/[^\w\-]+/g, "") // remove non-word chars
+      .replace(/\-\-+/g, "-"); // collapse multiple dashes
+
   // Handle category click
-  const handleCategoryClick = (categoryId) => {
-    localStorage.setItem("selectedCategoryId", categoryId);
-    router.push("/product-list");
+  const handleCategoryClick = (category) => {
+    const slug = slugify(category.name);
+    localStorage.setItem("selectedCategoryId", category.id);
+    router.push(`/product-list/${slug}`);
   };
 
   return (
@@ -159,7 +170,7 @@ export default function CategoryCr() {
                 whileHover={{ y: -5 }}
                 transition={{ duration: 0.2 }}
                 className="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 border border-gray-100 cursor-pointer h-[340px] flex flex-col"
-                onClick={() => handleCategoryClick(cat.id)}
+                onClick={() => handleCategoryClick(cat)}
               >
                 {/* Image Section */}
                 <div className="relative w-full h-[260px] bg-gradient-to-br from-gray-50 to-gray-100 overflow-hidden">
@@ -230,38 +241,38 @@ export default function CategoryCr() {
       )}
 
       {/* Stats Section */}
-      <div className="mt-16 text-center text-gray-400 mb-6">
-        <div className="grid grid-cols-2 sm:flex sm:justify-center sm:items-center sm:gap-32 gap-y-10 gap-x-0">
-          {/* Stat 1 */}
-          <div>
-            <p className="text-3xl font-extrabold text-[hsl(25,50%,30%)]">
-              100%
-            </p>
-            <p className="text-md">Eco-Friendly</p>
-          </div>
-
-          {/* Stat 2 */}
-          <div>
-            <p className="text-3xl font-extrabold text-[hsl(25,50%,30%)]">
-              20-25 Business Days
-            </p>
-            <p className="text-md">Delivery Time</p>
-          </div>
-
-          {/* Stat 3 */}
-          <div>
-            <p className="text-3xl font-extrabold text-[hsl(25,50%,30%)]">
-              24/7
-            </p>
-            <p className="text-md">Support</p>
-          </div>
-
-          {/* Stat 4 */}
-          <div>
-            <p className="text-3xl font-extrabold text-[hsl(25,50%,30%)]">
-              Global
-            </p>
-            <p className="text-md">Reach</p>
+      <div className="mt-16 text-center mb-6">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-8 items-center justify-center">
+            {[
+              { title: "Curated Collections", img: "/badges/2.png" },
+              { title: "Fast & Global Delivery", img: "/badges/3.png" },
+              { title: "Premium Packaging", img: "/badges/4.png" },
+              { title: "Conscious Commerce", img: "/badges/1.png" },
+              { title: "Quality Assured", img: "/badges/5.png" },
+              {
+                title: "Timely Delivery",
+                img: "/badges/6.png",
+                subtitle: "20-25 Business Days",
+              },
+              { title: "Secure Payment", img: "/badges/7.png" },
+            ].map((badge, idx) => (
+              <div key={idx} className="flex flex-col items-center">
+                <img
+                  src={badge.img}
+                  alt={badge.title}
+                  className="w-20 h-20 sm:w-24 sm:h-24 object-contain hover:scale-110 transition-transform duration-300"
+                />
+                <p className="mt-3 text-sm sm:text-base font-semibold text-gray-700">
+                  {badge.title}
+                </p>
+                {badge.subtitle && (
+                  <p className="text-xs sm:text-sm text-gray-500 mt-1">
+                    {badge.subtitle}
+                  </p>
+                )}
+              </div>
+            ))}
           </div>
         </div>
       </div>

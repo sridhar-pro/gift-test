@@ -257,13 +257,17 @@ const PopupForm = ({
         return;
       }
 
-      // Generate product_item payload smartly
-      const selectedVariants =
-        JSON.parse(localStorage.getItem("selectedVariants")) || {};
-      const selectedContents =
-        JSON.parse(localStorage.getItem("selectedContents")) || [];
+      // ✅ Always fetch from checkoutData first, fallback to localStorage
+      const storedCheckout =
+        JSON.parse(sessionStorage.getItem("checkoutData")) || {};
+
+      const selectedVariants = storedCheckout?.selectedVariants || {};
+      const selectedContents = storedCheckout?.selectedContents || [];
+
+      // ✅ Handle special case for Signature Conscious hamper
+
       const isSignatureConscious =
-        categoryContent?.name === "Signature Conscious";
+        storedCheckout?.categoryContent?.name === "Signature Consicious";
 
       // 2. Prepare request body
       const requestBody = {
@@ -280,12 +284,11 @@ const PopupForm = ({
         price: (categoryContent?.price / 100) * quantity,
         quantity_required: quantity,
 
-        // Generate product_item dynamically
         product_item: isSignatureConscious
           ? selectedContents
-              .map((item) => selectedVariants[item] || item) // Use selected variant if available
+              .map((item) => selectedVariants[item] || item)
               .join(", ")
-          : selectedContents.join(", "), // For other categories, send only default contents
+          : selectedContents.join(", "),
       };
 
       // console.log("Body", requestBody);
