@@ -3,6 +3,10 @@ import { useEffect, useState, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import PopupForm from "../components/PopupForm2";
+import { useSession } from "../context/SessionContext";
+import { useAuth } from "../utills/AuthContext";
+import toast from "react-hot-toast";
+import { Pencil, PhoneCallIcon, Trash2 } from "lucide-react";
 
 export default function CheckoutPage() {
   const [checkoutData, setCheckoutData] = useState(null);
@@ -10,6 +14,163 @@ export default function CheckoutPage() {
   const [quantity, setQuantity] = useState(1);
   const [loading, setLoading] = useState(true);
   const leftSectionRef = useRef(null);
+
+  const { getValidToken } = useAuth();
+  const { companyId, isLoggedIn } = useSession();
+  console.log("Id:", companyId);
+
+  const [addresses, setAddresses] = useState([]);
+  const [formData, setFormData] = useState({
+    line1: "",
+    line2: "",
+    city: "",
+    state: "",
+    postal_code: "",
+    country: "",
+    landmark: "",
+    phone: "",
+  });
+  const [selectedAddress, setSelectedAddress] = useState(null);
+
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+
+  // ✅ Fetch Addresses
+  const fetchAddresses = async () => {
+    try {
+      setLoading(true);
+      const token = await getValidToken();
+
+      const res = await fetch("/api/customer_address", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ company_id: companyId }),
+      });
+
+      const data = await res.json();
+      if (res.ok && data.status) {
+        setAddresses(data.data);
+      } else {
+        toast.error(data.message || "Failed to fetch addresses ❌");
+      }
+    } catch (error) {
+      console.error("Addresses API Error ❌", error);
+      toast.error("Something went wrong ❌");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (companyId) fetchAddresses();
+  }, [companyId]);
+
+  // ✅ Input handler
+  const handleChange = (e) => {
+    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  };
+
+  // ✅ Add Address
+  const handleAddAddress = async (e) => {
+    e.preventDefault();
+    try {
+      const token = await getValidToken();
+      const res = await fetch("/api/edit_address", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          company_id: companyId,
+          ...formData,
+          active: 1,
+        }),
+      });
+
+      const data = await res.json();
+      if (res.ok && data.status) {
+        toast.success("Address added successfully ✅");
+        setIsAddModalOpen(false);
+        setFormData({
+          line1: "",
+          line2: "",
+          city: "",
+          state: "",
+          postal_code: "",
+          country: "",
+          landmark: "",
+          phone: "",
+        });
+        fetchAddresses();
+      } else {
+        toast.error(data.message || "Failed to add address ❌");
+      }
+    } catch (error) {
+      console.error("Add Address API Error ❌", error);
+      toast.error("Something went wrong ❌");
+    }
+  };
+
+  // ✅ Update Address
+  const handleUpdateAddress = async (e) => {
+    e.preventDefault();
+    try {
+      const token = await getValidToken();
+      const res = await fetch("/api/edit_address", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          id: selectedAddress.id,
+          company_id: selectedAddress.company_id,
+          ...formData,
+          active: 1,
+        }),
+      });
+
+      const data = await res.json();
+      if (res.ok && data.status) {
+        toast.success("Address updated successfully ✅");
+        setIsEditModalOpen(false);
+        fetchAddresses();
+      } else {
+        toast.error(data.message || "Failed to update address ❌");
+      }
+    } catch (error) {
+      console.error("Update Address API Error ❌", error);
+      toast.error("Something went wrong ❌");
+    }
+  };
+
+  // ✅ Select Address
+  const handleSelectAddress = (id) => {
+    const address = addresses.find((addr) => addr.id === id);
+    if (address) {
+      setSelectedAddress(address);
+    }
+  };
+
+  // ✅ Edit Address
+  const handleEditClick = (address) => {
+    setSelectedAddress(address);
+    setFormData({
+      line1: address.line1 || "",
+      line2: address.line2 || "",
+      city: address.city || "",
+      state: address.state || "",
+      postal_code: address.postal_code || "",
+      country: address.country || "",
+      landmark: address.landmark || "",
+      phone: address.phone || "",
+    });
+    setIsEditModalOpen(true);
+  };
 
   useEffect(() => {
     const stored = sessionStorage.getItem("checkoutData");
@@ -26,6 +187,83 @@ export default function CheckoutPage() {
 
     setLoading(false);
   }, []);
+
+  // Handle delete address
+  const handleDeleteAddress = async (id) => {
+    toast.custom((t) => (
+      <div className="p-5 bg-white rounded-2xl shadow-xl border border-gray-200 w-80 text-center">
+        {/* Icon */}
+        <div className="w-12 h-12 mx-auto flex items-center justify-center bg-red-100 rounded-full mb-3">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-7 w-7 text-red-500"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M6 18L18 6M6 6l12 12"
+            />
+          </svg>
+        </div>
+
+        {/* Title */}
+        <h3 className="text-lg font-semibold text-gray-800 mb-1">
+          Delete Address?
+        </h3>
+        <p className="text-sm text-gray-500 mb-4">
+          This action cannot be undone.
+        </p>
+
+        {/* Buttons */}
+        <div className="flex justify-center gap-4">
+          <button
+            onClick={() => toast.dismiss(t.id)}
+            className="px-5 py-2 text-gray-600 hover:text-gray-800 bg-gray-100 hover:bg-gray-200 rounded-lg transition"
+          >
+            Cancel
+          </button>
+
+          <button
+            onClick={async () => {
+              try {
+                const token = await getValidToken();
+                const res = await fetch("/api/delete_address", {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                  },
+                  body: JSON.stringify({ id }),
+                });
+
+                const data = await res.json();
+                if (res.ok && data.status) {
+                  toast.success("Address deleted successfully", {
+                    position: "top-right",
+                  });
+                  fetchAddresses();
+                } else {
+                  toast.error(data.message || "Failed to delete ❌");
+                }
+              } catch (error) {
+                console.error("Delete Address API Error ❌", error);
+                toast.error("Something went wrong ❌");
+              } finally {
+                toast.dismiss(t.id);
+              }
+            }}
+            className="px-5 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg shadow-md transition"
+          >
+            Delete
+          </button>
+        </div>
+      </div>
+    ));
+  };
 
   // Scroll-lock logic
   useEffect(() => {
@@ -178,17 +416,213 @@ export default function CheckoutPage() {
           </div>
         </div>
 
-        {/* Left Section (Popup Form) */}
         <div
           ref={leftSectionRef}
           className="order-2 lg:order-1 space-y-8 pr-0 lg:pr-8 max-h-screen overflow-y-auto scrollbar-hide"
         >
-          <PopupForm
-            inline={true}
-            product={product}
-            category={category}
-            categoryContent={categoryContent}
-          />
+          {/* 🚚 Customer Address (Only for logged-in users) */}
+          {isLoggedIn ? (
+            <>
+              <div className="bg-white rounded-lg border border-gray-200 shadow-sm p-4 mb-6">
+                <div className="flex justify-between items-center mb-4">
+                  <h3 className="text-lg font-semibold text-gray-900">
+                    Delivery Address
+                  </h3>
+                </div>
+
+                {loading ? (
+                  <p>Loading addresses…</p>
+                ) : (
+                  <>
+                    {addresses && addresses.length > 0 ? (
+                      // ✅ Sort addresses: selectedAddress first
+                      [...addresses]
+                        .sort((a, b) => {
+                          if (selectedAddress?.id === a.id) return -1;
+                          if (selectedAddress?.id === b.id) return 1;
+                          return 0;
+                        })
+                        .map((address) => (
+                          <div
+                            key={address.id}
+                            className={`border rounded-lg p-4 bg-gray-50 shadow-sm mb-3 flex justify-between items-start cursor-pointer transition ${
+                              selectedAddress?.id === address.id
+                                ? "border-green-500 bg-green-50"
+                                : ""
+                            }`}
+                            onClick={() => handleSelectAddress(address.id)}
+                          >
+                            {/* Left: Radio + Address Info */}
+                            <div className="flex items-start gap-3">
+                              <input
+                                type="radio"
+                                name="selectedAddress"
+                                checked={selectedAddress?.id === address.id}
+                                onChange={() => handleSelectAddress(address.id)}
+                                className="mt-1 w-4 h-4 text-green-600 border-gray-300 focus:ring-green-500 cursor-pointer"
+                              />
+                              <div>
+                                <p className="font-semibold text-gray-900">
+                                  Delivery to {address.line1}
+                                </p>
+                                <p className="text-sm text-gray-600">
+                                  {address.line2}, {address.city} -{" "}
+                                  {address.postal_code}
+                                </p>
+                                <p className="text-sm text-gray-600">
+                                  {address.state}, {address.country}
+                                  {address.landmark &&
+                                    `, Landmark: ${address.landmark}`}
+                                </p>
+                                <p className="text-sm text-gray-600 flex items-center gap-1">
+                                  <PhoneCallIcon className="w-4 h-4" />
+                                  {address.phone}
+                                </p>
+                              </div>
+                            </div>
+
+                            {/* Right: Edit/Delete Buttons */}
+                            <div className="flex gap-3">
+                              <button
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  handleEditClick(address);
+                                }}
+                                className="text-blue-600 hover:text-blue-800"
+                                aria-label="Edit address"
+                              >
+                                <Pencil className="w-5 h-5" />
+                              </button>
+                              <button
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  handleDeleteAddress(address.id);
+                                }}
+                                className="text-red-600 hover:text-red-800"
+                                aria-label="Delete address"
+                              >
+                                <Trash2 className="w-5 h-5" />
+                              </button>
+                            </div>
+                          </div>
+                        ))
+                    ) : (
+                      <p className="text-gray-500 text-sm">
+                        No addresses found.
+                      </p>
+                    )}
+
+                    {/* Buttons Row */}
+                    <div className="flex justify-end items-center gap-4 mt-2">
+                      <button
+                        onClick={() => setIsAddModalOpen(true)}
+                        className="text-sm font-medium underline text-green-600 hover:text-green-800 transition-colors"
+                      >
+                        + Add Address
+                      </button>
+                    </div>
+                  </>
+                )}
+              </div>
+
+              {/* ➕ Add Address Modal */}
+              {isAddModalOpen && (
+                <div className="fixed inset-0 flex items-center justify-center bg-black/50 z-50">
+                  <div className="bg-white p-6 rounded-xl shadow-lg w-full max-w-lg">
+                    <h2 className="text-lg font-semibold mb-4 text-gray-800">
+                      Add New Address
+                    </h2>
+                    <form onSubmit={handleAddAddress} className="space-y-3">
+                      {Object.keys(formData).map((field) => (
+                        <input
+                          key={field}
+                          type="text"
+                          name={field}
+                          placeholder={field.replace("_", " ").toUpperCase()}
+                          value={formData[field]}
+                          onChange={handleChange}
+                          className="w-full border p-2 rounded-lg"
+                        />
+                      ))}
+                      <div className="flex justify-end space-x-3 mt-4">
+                        <button
+                          type="button"
+                          onClick={() => setIsAddModalOpen(false)}
+                          className="px-4 py-2 border rounded-lg text-gray-600 hover:bg-gray-100"
+                        >
+                          Cancel
+                        </button>
+                        <button
+                          type="submit"
+                          className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700"
+                        >
+                          Add
+                        </button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              )}
+
+              {/* ✏️ Edit Address Modal */}
+              {isEditModalOpen && selectedAddress && (
+                <div className="fixed inset-0 flex items-center justify-center bg-black/50 z-50">
+                  <div className="bg-white p-6 rounded-xl shadow-lg w-full max-w-lg">
+                    <h2 className="text-lg font-semibold mb-4 text-gray-800">
+                      Edit Address
+                    </h2>
+                    <form onSubmit={handleUpdateAddress} className="space-y-3">
+                      {Object.keys(formData).map((field) => (
+                        <input
+                          key={field}
+                          type="text"
+                          name={field}
+                          placeholder={field.replace("_", " ").toUpperCase()}
+                          value={formData[field]}
+                          onChange={handleChange}
+                          className="w-full border p-2 rounded-lg"
+                        />
+                      ))}
+                      <div className="flex justify-end space-x-3 mt-4">
+                        <button
+                          type="button"
+                          onClick={() => setIsEditModalOpen(false)}
+                          className="px-4 py-2 border rounded-lg text-gray-600 hover:bg-gray-100"
+                        >
+                          Cancel
+                        </button>
+                        <button
+                          type="submit"
+                          className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+                        >
+                          Save
+                        </button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              )}
+
+              {/* ✅ Hidden PopupForm but with API-selected address */}
+              <div>
+                <PopupForm
+                  inline={true}
+                  product={product}
+                  category={category}
+                  categoryContent={categoryContent}
+                  apiAddress={selectedAddress} // 👈 pass selected address
+                />
+              </div>
+            </>
+          ) : (
+            // 🟢 Guest users → Normal PopupForm
+            <PopupForm
+              inline={true}
+              product={product}
+              category={category}
+              categoryContent={categoryContent}
+            />
+          )}
         </div>
 
         <div className="hidden lg:block absolute left-1/2 top-0 bottom-0 w-px bg-gray-200" />

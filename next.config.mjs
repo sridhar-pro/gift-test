@@ -45,6 +45,46 @@ const nextConfig = {
         source: "/api/giftCategory",
         destination: `${BASE_API}/giftCategory`,
       },
+      {
+        source: "/api/register",
+        destination: `${BASE_API}/register`,
+      },
+      {
+        source: "/api/mobile_login",
+        destination: `${BASE_API}/mobile_login`,
+      },
+      {
+        source: "/api/verify_otp",
+        destination: `${BASE_API}/verify_otp`,
+      },
+      {
+        source: "/api/resend_otp",
+        destination: `${BASE_API}/resend_otp`,
+      },
+      {
+        source: "/api/email_login",
+        destination: `${BASE_API}/email_login`,
+      },
+      {
+        source: "/api/forget_password",
+        destination: `${BASE_API}/forgot_password`,
+      },
+      {
+        source: "/api/customer_address",
+        destination: `${BASE_API}/customer_address`,
+      },
+      {
+        source: "/api/edit_address",
+        destination: `${BASE_API}/add_and_edit_address`,
+      },
+      {
+        source: "/api/delete_address",
+        destination: `${BASE_API}/delete_address`,
+      },
+      {
+        source: "/api/tokenLogin",
+        destination: `${BASE_API}/tokenLogin`,
+      },
 
       {
         source: "/api/save_prebook_gift",

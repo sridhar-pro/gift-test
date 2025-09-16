@@ -8,6 +8,9 @@ import { motion, AnimatePresence } from "framer-motion";
 import SearchBar from "./SearchBar";
 import { useRouter } from "next/navigation";
 import BundleView from "./BuildCustomBox/Bundlefile";
+import { useSession } from "../context/SessionContext";
+import { usePathname } from "next/navigation";
+import LogoutButton from "./Logout";
 
 const messages = [
   "Unlock exclusive savings: Enjoy 25% off on all Sanskruthi Solutions products!",
@@ -36,8 +39,25 @@ export default function Navbar({
   const [origin, setOrigin] = useState("");
   const languages = ["EN", "GU", "HI", "TA", "TE"];
 
+  const pathname = usePathname();
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const modalRef = useRef(null);
+
+  const dropdownRef = useRef(null);
+  const { isLoggedIn } = useSession();
+  const [open, setOpen] = useState(false);
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   const [isSearchExpanded, setIsSearchExpanded] = useState(false);
 
@@ -273,15 +293,59 @@ export default function Navbar({
           {/* Right Side Icons */}
           <div className="hidden md:flex items-center space-x-6 flex-shrink-0">
             <SearchBar />
-            <button
-              aria-label="Profile"
-              onClick={() =>
-                (window.location.href = `https://shop.yuukke.com/login`)
-              }
-              className="flex items-center justify-center"
-            >
-              <User className="w-5 h-5 text-black" />
-            </button>
+            <div className="relative" ref={dropdownRef}>
+              {!isLoggedIn ? (
+                <Link
+                  href={
+                    pathname && pathname !== "/login"
+                      ? `/login?from=${encodeURIComponent(pathname)}`
+                      : "/login"
+                  }
+                  aria-label="Profile"
+                  className="rounded-full transition flex items-center justify-center w-full h-full"
+                >
+                  <User className="w-5 h-5 text-black cursor-pointer" />
+                </Link>
+              ) : (
+                <div className="relative flex items-center gap-2">
+                  {/* Regular Profile Icon */}
+                  <div className="relative">
+                    <button
+                      onClick={() => setOpen((prev) => !prev)}
+                      className="w-9 h-9 rounded-full bg-gray-200 flex items-center justify-center shadow-md hover:bg-gray-300 transition"
+                    >
+                      <User className="w-5 h-5 text-gray-600" />
+                    </button>
+
+                    {open && (
+                      <div className="absolute right-0 mt-2 w-36 bg-white border rounded-lg shadow-lg z-50">
+                        <div className="px-0 py-2 hover:bg-gray-100 transition">
+                          <LogoutButton />
+                        </div>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Dashboard Icon for group_id 4 */}
+                  {Number(sessionStorage.getItem("group_id")) === 4 && (
+                    <button
+                      onClick={() => {
+                        const token = sessionStorage.getItem("access_token");
+                        if (token) {
+                          window.location.href = `https://marketplace.yuukke.com/Oauth/tLogin/${token}`;
+                        } else {
+                          alert("Access token missing. Please login again.");
+                        }
+                      }}
+                      aria-label="Dashboard"
+                      className="w-9 h-9 rounded-full bg-green-500 flex items-center justify-center shadow-md hover:bg-green-600 transition"
+                    >
+                      <LayoutDashboard className="w-5 h-5 text-white" />
+                    </button>
+                  )}
+                </div>
+              )}
+            </div>
             <a
               href="https://marketplace.yuukke.com/shop/wishlist"
               aria-label="Favorites"
@@ -311,6 +375,22 @@ export default function Navbar({
             >
               <ShoppingCart className="w-5 h-5 text-black" />
             </button>
+
+            <div className="flex items-center">
+              {!isLoggedIn ? (
+                // 👤 User icon when not logged in → redirect to login
+                <Link
+                  href="/login"
+                  aria-label="Login"
+                  className="flex items-center justify-center w-9 h-9 rounded-full  bg-white hover:bg-gray-300 transition"
+                >
+                  <User className="w-5 h-5 text-gray-900" />
+                </Link>
+              ) : (
+                // 🚪 Logout button when logged in
+                <LogoutButton />
+              )}
+            </div>
 
             {/* Mobile Menu Toggler */}
             <button

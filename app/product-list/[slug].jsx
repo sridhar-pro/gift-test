@@ -265,6 +265,21 @@ function ProductListInner() {
       price: 150000, // ₹4,500 in paise for Razorpay
       image: "/2.jpeg",
     },
+    902: {
+      name: "Celebration Treasures",
+      title: "Celebration Treasures",
+      description:
+        " Make your festive gifting meaningful with Yuukke’s Celebration Treasures Hamper — a perfect blend of sustainability, tradition, and artisanal charm. Curated with love and care, this exclusive hamper is beautifully packed in a woven bamboo basket and filled with handcrafted treasures that light up every celebration.",
+      tagline: "Reward performance, the sustainable way.",
+      features: [
+        "Eco-conscious & sustainable",
+        "Handcrafted by skilled artisans",
+        "Thoughtfully curated for festive and corporate gifting",
+        "Packed in an elegant woven bamboo basket ",
+      ],
+      price: 150000, // ₹4,500 in paise for Razorpay
+      image: "/product-list/ham11.png",
+    },
 
     default: {
       name: "Premium Gifts",
@@ -730,6 +745,56 @@ function ProductListInner() {
       //   image: "/product-list/s9014.png",
       // },
     ],
+    902: [
+      {
+        id: 1,
+        name: "Wine & Cheese Set",
+        description: "Fine wine paired with artisan cheeses",
+        price: "₹4,299",
+        rating: 4.8,
+        image: "/product-list/ham11.png",
+      },
+      {
+        id: 2,
+        name: "Wine & Cheese Set",
+        description: "Fine wine paired with artisan cheeses",
+        price: "₹4,299",
+        rating: 4.8,
+        image: "/product-list/9026.png",
+      },
+      {
+        id: 6,
+        name: "Wine & Cheese Set",
+        description: "Fine wine paired with artisan cheeses",
+        price: "₹4,299",
+        rating: 4.8,
+        image: "/product-list/9027.png",
+      },
+      {
+        id: 3,
+        name: "Wine & Cheese Set",
+        description: "Fine wine paired with artisan cheeses",
+        price: "₹4,299",
+        rating: 4.8,
+        image: "/product-list/9022.png",
+      },
+      {
+        id: 4,
+        name: "Wine & Cheese Set",
+        description: "Fine wine paired with artisan cheeses",
+        price: "₹4,299",
+        rating: 4.8,
+        image: "/product-list/9023.png",
+      },
+      {
+        id: 5,
+        name: "Wine & Cheese Set",
+        description: "Fine wine paired with artisan cheeses",
+        price: "₹4,299",
+        rating: 4.8,
+        image: "/product-list/9024.png",
+      },
+    ],
     // Default products for any category
     default: [
       {
@@ -813,6 +878,13 @@ function ProductListInner() {
       "Embellished Pichwai Theme wall hanging",
     ],
     "Eco-Excellence Kit": ["Cork Journal", "Eco Mug", "Cork Pen", "Coaster"],
+    "Celebration Treasures": [
+      "Bell Thoran with Fiary Light",
+      "Terracota Handpainted Diyas 4 nos",
+      "Rose Candle",
+      "Incense stick holder",
+      "Incense sticks ",
+    ],
   };
 
   return (

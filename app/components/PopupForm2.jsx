@@ -11,6 +11,7 @@ import {
 import toast, { Toaster } from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
+import { useSession } from "../context/SessionContext";
 
 const PopupForm = ({
   isOpen = false,
@@ -20,10 +21,15 @@ const PopupForm = ({
   categoryContent,
   inline = false,
   defaultCatalogue,
+  apiAddress,
 }) => {
   const router = useRouter();
 
   const [quantity, setQuantity] = useState(1);
+  const { isLoggedIn } = useSession();
+
+  // 👇 hide form if address is passed
+  const useApiAddress = !!apiAddress;
 
   // ✅ Fetch quantity from sessionStorage if available
   useEffect(() => {
@@ -244,17 +250,20 @@ const PopupForm = ({
         }
       }
 
-      if (
-        !formData.name ||
-        !formData.phone ||
-        !formData.email ||
-        !formData.city ||
-        !formData.state ||
-        !formData.pincode
-      ) {
-        toast.error("Please fill in all required fields.");
-        setLoading(false);
-        return;
+      // ✅ Only validate if NO apiAddress
+      if (!apiAddress) {
+        if (
+          !formData.name ||
+          !formData.phone ||
+          !formData.email ||
+          !formData.city ||
+          !formData.state ||
+          !formData.pincode
+        ) {
+          toast.error("Please fill in all required fields.");
+          setLoading(false);
+          return;
+        }
       }
 
       // ✅ Always fetch from checkoutData first, fallback to localStorage
@@ -269,16 +278,22 @@ const PopupForm = ({
       const isSignatureConscious =
         storedCheckout?.categoryContent?.name === "Signature Consicious";
 
+      const emailToUse = useApiAddress
+        ? sessionStorage.getItem("email") || ""
+        : formData.email;
+
       // 2. Prepare request body
       const requestBody = {
-        full_name: formData.name,
-        phone_number: formData.phone,
-        email: formData.email,
-        city: formData.city,
-        address: formData.address, // 🆕 include address
-        state: formData.state, // 🆕 include state
-        pincode: formData.pincode, // 🆕 include pincode
-        landmark: formData.landmark,
+        full_name: useApiAddress ? apiAddress.line1 : formData.name,
+        phone_number: useApiAddress ? apiAddress.phone : formData.phone,
+        email: emailToUse, // 👈 fallback
+        city: useApiAddress ? apiAddress.city : formData.city,
+        address: useApiAddress
+          ? `${apiAddress.line1}, ${apiAddress.line2}`
+          : formData.address,
+        state: useApiAddress ? apiAddress.state : formData.state,
+        pincode: useApiAddress ? apiAddress.postal_code : formData.pincode,
+        landmark: useApiAddress ? apiAddress.landmark : formData.landmark,
         prebookingType: formData.prebookingType,
         catalogue: formData.catalogue,
         price: (categoryContent?.price / 100) * quantity,
@@ -427,361 +442,309 @@ const PopupForm = ({
                     </p>
                   </div>
                 )}
-                <h2 className="text-2xl font-semibold text-gray-900 mb-4">
-                  Delivery
-                </h2>
+                {!useApiAddress && (
+                  <>
+                    <h2 className="text-2xl font-semibold text-gray-900 mb-4">
+                      Delivery
+                    </h2>
+                  </>
+                )}
                 <form onSubmit={handleSubmit} className="space-y-4">
-                  {/* Full Name */}
-                  <div>
-                    <label
-                      htmlFor="name"
-                      className="block text-sm font-medium text-gray-700 mb-1"
-                    >
-                      Full Name
-                    </label>
-                    <input
-                      type="text"
-                      id="name"
-                      name="name"
-                      value={formData.name}
-                      onChange={handleChange}
-                      required
-                      placeholder="Enter your full name"
-                      className="input-field"
-                    />
-                  </div>
+                  {!isLoggedIn && (
+                    <>
+                      {!useApiAddress && (
+                        <>
+                          {/* Full Name */}
+                          <div>
+                            <label
+                              htmlFor="name"
+                              className="block text-sm font-medium text-gray-700 mb-1"
+                            >
+                              Full Name
+                            </label>
+                            <input
+                              type="text"
+                              id="name"
+                              name="name"
+                              value={formData.name}
+                              onChange={handleChange}
+                              required
+                              placeholder="Enter your full name"
+                              className="input-field"
+                            />
+                          </div>
 
-                  <div className="flex flex-col md:flex-row gap-4">
-                    {/* Business Email */}
-                    <div className="flex-1">
-                      <label
-                        htmlFor="email"
-                        className="block text-sm font-medium text-gray-700 mb-1"
-                      >
-                        Business Email
-                      </label>
-                      <input
-                        type="email"
-                        id="email"
-                        name="email"
-                        value={formData.email}
-                        onChange={handleChange}
-                        required
-                        placeholder="Enter your business email"
-                        className="input-field w-full"
-                      />
-                    </div>
-
-                    {/* Phone Number */}
-                    <div className="flex-1">
-                      <label
-                        htmlFor="phone"
-                        className="block text-sm font-medium text-gray-700 mb-1"
-                      >
-                        Phone Number
-                      </label>
-                      <input
-                        type="tel"
-                        id="phone"
-                        name="phone"
-                        value={formData.phone}
-                        onChange={handleChange}
-                        maxLength={10}
-                        required
-                        placeholder="Enter your phone number"
-                        className="input-field w-full"
-                      />
-                    </div>
-                  </div>
-
-                  {/* Address */}
-                  <div>
-                    <label
-                      htmlFor="address"
-                      className="block text-sm font-medium text-gray-700 mb-1"
-                    >
-                      Address
-                    </label>
-                    <input
-                      type="text"
-                      id="address"
-                      name="address"
-                      value={formData.address}
-                      onChange={handleChange}
-                      required
-                      placeholder="Enter your full address"
-                      className="input-field"
-                    />
-                  </div>
-
-                  {/* City + Landmark in same row */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    {/* City */}
-                    <div>
-                      <label
-                        htmlFor="city"
-                        className="block text-sm font-medium text-gray-700 mb-1"
-                      >
-                        City
-                      </label>
-                      <input
-                        type="text"
-                        id="city"
-                        name="city"
-                        value={formData.city}
-                        onChange={handleChange}
-                        required
-                        placeholder="Enter your city"
-                        className="input-field"
-                      />
-                    </div>
-
-                    {/* Landmark */}
-                    <div>
-                      <label
-                        htmlFor="landmark"
-                        className="block text-sm font-medium text-gray-700 mb-1"
-                      >
-                        Landmark
-                      </label>
-                      <input
-                        type="text"
-                        id="landmark"
-                        name="landmark"
-                        value={formData.landmark}
-                        onChange={handleChange}
-                        placeholder="Nearby landmark (optional)"
-                        className="input-field"
-                      />
-                    </div>
-                  </div>
-
-                  {/* State & Pincode in same row */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {/* State */}
-                    <div>
-                      <label
-                        htmlFor="state"
-                        className="block text-sm font-medium text-gray-700 mb-1"
-                      >
-                        State
-                      </label>
-                      <input
-                        type="text"
-                        id="state"
-                        name="state"
-                        value={formData.state}
-                        onChange={handleChange}
-                        required
-                        placeholder="Enter your state"
-                        className="input-field"
-                      />
-                    </div>
-
-                    {/* Pincode */}
-                    <div>
-                      <label
-                        htmlFor="pincode"
-                        className="block text-sm font-medium text-gray-700 mb-1"
-                      >
-                        Pincode
-                      </label>
-                      <input
-                        type="text"
-                        id="pincode"
-                        name="pincode"
-                        value={formData.pincode}
-                        onChange={handleChange}
-                        maxLength={6}
-                        required
-                        placeholder="Enter your pincode"
-                        className="input-field"
-                      />
-                    </div>
-                  </div>
-                  {/* Gifting For */}
-                  {/* <div>
-                    <label
-                      htmlFor="giftingFor"
-                      className="block text-sm font-medium text-gray-700 mb-1"
-                    >
-                      Gifting For
-                    </label>
-                    <select
-                      id="giftingFor"
-                      name="giftingFor"
-                      value={formData.giftingFor}
-                      onChange={handleChange}
-                      required
-                      className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-red-500 outline-none transition bg-white"
-                    >
-                      <option value="">Select an option</option>
-                      <option value="internal-employees">
-                        Internal Employees
-                      </option>
-                      <option value="clients-customers">
-                        Clients / Customers
-                      </option>
-                      <option value="cxos-executives">
-                        CXOs / Executives / Elite Partners
-                      </option>
-                      <option value="others">Others</option>
-                    </select>
-                  </div> */}
-
-                  {/* Budget */}
-                  {/* <div>
-                    <label
-                      htmlFor="budget"
-                      className="block text-sm font-medium text-gray-700 mb-1"
-                    >
-                      Budget per Gift (₹)
-                    </label>
-                    <input
-                      type="number"
-                      id="budget"
-                      name="budget"
-                      value={formData.budget}
-                      onChange={handleChange}
-                      required
-                      placeholder="Enter your budget per gift"
-                      className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-red-500 outline-none transition"
-                    />
-                  </div> */}
-
-                  {/* Quantity */}
-                  {/* <div>
-                    <label
-                      htmlFor="quantity"
-                      className="block text-sm font-medium text-gray-700 mb-1"
-                    >
-                      Quantity Required
-                    </label>
-                    <input
-                      type="number"
-                      id="quantity"
-                      name="quantity"
-                      value={formData.quantity}
-                      onChange={handleChange}
-                      required
-                      placeholder="Enter quantity required"
-                      className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-red-500 outline-none transition"
-                    />
-                  </div> */}
-
-                  {/* Catalogue Selection (hidden, set to category ID) */}
-                  <input
-                    type="hidden"
-                    name="catalogue"
-                    value={formData.catalogue}
-                  />
-
-                  {/* Prebooking Type (hidden, set to "order") */}
-                  <input type="hidden" name="prebookingType" value="order" />
-
-                  {/* Payment Section */}
-                  <div className="">
-                    <h1 className="text-xl font-[800] tracking-tight">
-                      Payment
-                    </h1>
-                    <p className="text-gray-400 text-xs">
-                      All transactions are secure and encrypted.
-                    </p>
-
-                    <div className="mt-4 border border-gray-300 rounded-lg p-4 bg-white">
-                      <label
-                        className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between "
-                        onClick={handleToggle}
-                      >
-                        <div className="flex items-start gap-2 sm:items-center">
-                          <input
-                            type="radio"
-                            name="payment"
-                            value="razorpay"
-                            checked={selectedMethod === "razorpay"}
-                            onChange={handleRadioChange}
-                            className="accent-black w-4 h-4 mt-1 sm:mt-0 cursor-pointer"
-                          />
-                          <span className="text-sm font-medium">
-                            Razorpay Secure
-                            <br className="block sm:hidden" />
-                            <br className="hidden lg:block" />
-                            <span className="text-xs text-gray-600">
-                              (UPI, Cards, Wallets, NetBanking)
-                            </span>
-                          </span>
-                        </div>
-
-                        <div className="flex items-center flex-wrap gap-2 justify-end sm:justify-normal">
-                          <img
-                            src="/upi.svg"
-                            alt="UPI"
-                            className="w-8 h-8 sm:w-10 sm:h-10 object-contain"
-                          />
-                          <img
-                            src="/visa.svg"
-                            alt="Visa"
-                            className="w-8 h-8 sm:w-10 sm:h-10 object-contain"
-                          />
-                          <img
-                            src="/master.svg"
-                            alt="Master"
-                            className="w-8 h-8 sm:w-10 sm:h-10 object-contain"
-                          />
-                          <img
-                            src="/rupay.svg"
-                            alt="Rupay"
-                            className="w-8 h-8 sm:w-10 sm:h-10 object-contain"
-                          />
-                          <div className="relative group">
-                            <div className="w-7 h-7 sm:w-8 sm:h-8 bg-gray-100 rounded-md text-xs font-bold flex items-center justify-center cursor-pointer group-hover:bg-gray-200">
-                              +16
+                          <div className="flex flex-col md:flex-row gap-4">
+                            {/* Business Email */}
+                            <div className="flex-1">
+                              <label
+                                htmlFor="email"
+                                className="block text-sm font-medium text-gray-700 mb-1"
+                              >
+                                Email
+                              </label>
+                              <input
+                                type="email"
+                                id="email"
+                                name="email"
+                                value={formData.email}
+                                onChange={handleChange}
+                                required
+                                placeholder="Enter your business email"
+                                className="input-field w-full"
+                              />
                             </div>
-                            <div className="absolute bottom-12 right-0 hidden group-hover:grid grid-cols-4 gap-2 bg-black shadow-xl rounded-lg border p-2 z-20 w-[176px]">
-                              {Array.from({ length: 16 }).map((_, i) => (
-                                <img
-                                  key={i}
-                                  src={`/${i + 1}.svg`}
-                                  alt={`Payment ${i + 1}`}
-                                  className="w-7 h-7 object-contain"
-                                />
-                              ))}
+
+                            {/* Phone Number */}
+                            <div className="flex-1">
+                              <label
+                                htmlFor="phone"
+                                className="block text-sm font-medium text-gray-700 mb-1"
+                              >
+                                Phone Number
+                              </label>
+                              <input
+                                type="tel"
+                                id="phone"
+                                name="phone"
+                                value={formData.phone}
+                                onChange={handleChange}
+                                maxLength={10}
+                                required
+                                placeholder="Enter your phone number"
+                                className="input-field w-full"
+                              />
                             </div>
                           </div>
-                        </div>
-                      </label>
 
-                      <AnimatePresence initial={false}>
-                        <motion.div
-                          key={showInfo ? "visible" : "hidden"}
-                          initial={{ opacity: 0, height: 0 }}
-                          animate={{
-                            opacity: 1,
-                            height: "auto",
-                            marginBottom: showInfo ? 16 : 0, // Prevents button jump
-                          }}
-                          exit={{ opacity: 0, height: 0 }}
-                          transition={{ duration: 0.3 }}
-                          className="overflow-hidden"
-                        >
-                          {showInfo && (
-                            <div className="border-t pt-4 mt-6 text-center bg-gray-50">
-                              <div className="flex justify-center mb-3">
-                                <Wallet2 className="w-10 h-10 sm:w-12 sm:h-12" />
-                              </div>
-                              <p className="text-sm text-gray-700 font-medium max-w-md mx-auto">
-                                After clicking “Pay now”, you'll be redirected
-                                to Cashfree Payments to securely complete your
-                                purchase using UPI, Cards, Wallets or
-                                NetBanking.
-                              </p>
+                          {/* Address */}
+                          <div>
+                            <label
+                              htmlFor="address"
+                              className="block text-sm font-medium text-gray-700 mb-1"
+                            >
+                              Address
+                            </label>
+                            <input
+                              type="text"
+                              id="address"
+                              name="address"
+                              value={formData.address}
+                              onChange={handleChange}
+                              required
+                              placeholder="Enter your full address"
+                              className="input-field"
+                            />
+                          </div>
+
+                          {/* City + Landmark in same row */}
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            {/* City */}
+                            <div>
+                              <label
+                                htmlFor="city"
+                                className="block text-sm font-medium text-gray-700 mb-1"
+                              >
+                                City
+                              </label>
+                              <input
+                                type="text"
+                                id="city"
+                                name="city"
+                                value={formData.city}
+                                onChange={handleChange}
+                                required
+                                placeholder="Enter your city"
+                                className="input-field"
+                              />
                             </div>
-                          )}
-                        </motion.div>
-                      </AnimatePresence>
-                    </div>
-                  </div>
 
+                            {/* Landmark */}
+                            <div>
+                              <label
+                                htmlFor="landmark"
+                                className="block text-sm font-medium text-gray-700 mb-1"
+                              >
+                                Landmark
+                              </label>
+                              <input
+                                type="text"
+                                id="landmark"
+                                name="landmark"
+                                value={formData.landmark}
+                                onChange={handleChange}
+                                placeholder="Nearby landmark (optional)"
+                                className="input-field"
+                              />
+                            </div>
+                          </div>
+
+                          {/* State & Pincode in same row */}
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            {/* State */}
+                            <div>
+                              <label
+                                htmlFor="state"
+                                className="block text-sm font-medium text-gray-700 mb-1"
+                              >
+                                State
+                              </label>
+                              <input
+                                type="text"
+                                id="state"
+                                name="state"
+                                value={formData.state}
+                                onChange={handleChange}
+                                required
+                                placeholder="Enter your state"
+                                className="input-field"
+                              />
+                            </div>
+
+                            {/* Pincode */}
+                            <div>
+                              <label
+                                htmlFor="pincode"
+                                className="block text-sm font-medium text-gray-700 mb-1"
+                              >
+                                Pincode
+                              </label>
+                              <input
+                                type="text"
+                                id="pincode"
+                                name="pincode"
+                                value={formData.pincode}
+                                onChange={handleChange}
+                                maxLength={6}
+                                required
+                                placeholder="Enter your pincode"
+                                className="input-field"
+                              />
+                            </div>
+                          </div>
+
+                          {/* Catalogue Selection (hidden, set to category ID) */}
+                          <input
+                            type="hidden"
+                            name="catalogue"
+                            value={formData.catalogue}
+                          />
+
+                          {/* Prebooking Type (hidden, set to "order") */}
+                          <input
+                            type="hidden"
+                            name="prebookingType"
+                            value="order"
+                          />
+
+                          {/* Payment Section */}
+                          <div className="">
+                            <h1 className="text-xl font-[800] tracking-tight">
+                              Payment
+                            </h1>
+                            <p className="text-gray-400 text-xs">
+                              All transactions are secure and encrypted.
+                            </p>
+
+                            <div className="mt-4 border border-gray-300 rounded-lg p-4 bg-white">
+                              <label
+                                className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between "
+                                onClick={handleToggle}
+                              >
+                                <div className="flex items-start gap-2 sm:items-center">
+                                  <input
+                                    type="radio"
+                                    name="payment"
+                                    value="razorpay"
+                                    checked={selectedMethod === "razorpay"}
+                                    onChange={handleRadioChange}
+                                    className="accent-black w-4 h-4 mt-1 sm:mt-0 cursor-pointer"
+                                  />
+                                  <span className="text-sm font-medium">
+                                    Razorpay Secure
+                                    <br className="block sm:hidden" />
+                                    <br className="hidden lg:block" />
+                                    <span className="text-xs text-gray-600">
+                                      (UPI, Cards, Wallets, NetBanking)
+                                    </span>
+                                  </span>
+                                </div>
+
+                                <div className="flex items-center flex-wrap gap-2 justify-end sm:justify-normal">
+                                  <img
+                                    src="/upi.svg"
+                                    alt="UPI"
+                                    className="w-8 h-8 sm:w-10 sm:h-10 object-contain"
+                                  />
+                                  <img
+                                    src="/visa.svg"
+                                    alt="Visa"
+                                    className="w-8 h-8 sm:w-10 sm:h-10 object-contain"
+                                  />
+                                  <img
+                                    src="/master.svg"
+                                    alt="Master"
+                                    className="w-8 h-8 sm:w-10 sm:h-10 object-contain"
+                                  />
+                                  <img
+                                    src="/rupay.svg"
+                                    alt="Rupay"
+                                    className="w-8 h-8 sm:w-10 sm:h-10 object-contain"
+                                  />
+                                  <div className="relative group">
+                                    <div className="w-7 h-7 sm:w-8 sm:h-8 bg-gray-100 rounded-md text-xs font-bold flex items-center justify-center cursor-pointer group-hover:bg-gray-200">
+                                      +16
+                                    </div>
+                                    <div className="absolute bottom-12 right-0 hidden group-hover:grid grid-cols-4 gap-2 bg-black shadow-xl rounded-lg border p-2 z-20 w-[176px]">
+                                      {Array.from({ length: 16 }).map(
+                                        (_, i) => (
+                                          <img
+                                            key={i}
+                                            src={`/${i + 1}.svg`}
+                                            alt={`Payment ${i + 1}`}
+                                            className="w-7 h-7 object-contain"
+                                          />
+                                        )
+                                      )}
+                                    </div>
+                                  </div>
+                                </div>
+                              </label>
+
+                              <AnimatePresence initial={false}>
+                                <motion.div
+                                  key={showInfo ? "visible" : "hidden"}
+                                  initial={{ opacity: 0, height: 0 }}
+                                  animate={{
+                                    opacity: 1,
+                                    height: "auto",
+                                    marginBottom: showInfo ? 16 : 0, // Prevents button jump
+                                  }}
+                                  exit={{ opacity: 0, height: 0 }}
+                                  transition={{ duration: 0.3 }}
+                                  className="overflow-hidden"
+                                >
+                                  {showInfo && (
+                                    <div className="border-t pt-4 mt-6 text-center bg-gray-50">
+                                      <div className="flex justify-center mb-3">
+                                        <Wallet2 className="w-10 h-10 sm:w-12 sm:h-12" />
+                                      </div>
+                                      <p className="text-sm text-gray-700 font-medium max-w-md mx-auto">
+                                        After clicking “Pay now”, you'll be
+                                        redirected to Cashfree Payments to
+                                        securely complete your purchase using
+                                        UPI, Cards, Wallets or NetBanking.
+                                      </p>
+                                    </div>
+                                  )}
+                                </motion.div>
+                              </AnimatePresence>
+                            </div>
+                          </div>
+                        </>
+                      )}
+                    </>
+                  )}
                   {/* Submit Button */}
                   <button
                     type="submit"

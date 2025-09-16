@@ -87,161 +87,9 @@ export default function CategoryCr() {
   };
 
   return (
-    <div
-      id="featured-products"
-      className="relative px-6 md:px-10 py-2 md:py-12 bg-gradient-to-b from-gray-50 to-white font-gift"
-    >
-      {/* Header */}
-      <motion.div
-        className="text-center mb-12"
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
-        viewport={{ once: true }}
-      >
-        <h2 className="text-4xl sm:text-4xl lg:text-6xl font-bold text-gray-900 mb-3">
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#A00030] to-[#000940] capitalize">
-            Featured Gifting Hamper
-          </span>
-        </h2>
-        <p className="text-gray-600 text-sm md:text-lg max-w-2xl mx-auto">
-          Discover our handpicked selection of premium corporate gifts, crafted
-          to make lasting impressions.
-        </p>
-      </motion.div>
-
-      {/* State Handling */}
-      {loading ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
-          {Array.from({ length: 8 }).map((_, i) => (
-            <div
-              key={i}
-              className="bg-white rounded-xl overflow-hidden shadow-md border border-gray-100 h-[340px] flex flex-col animate-pulse"
-            >
-              {/* Image Section Skeleton */}
-              <div className="w-full h-[260px] bg-gray-200"></div>
-
-              {/* Content Skeleton */}
-              <div className="p-3 flex flex-col flex-1">
-                {/* Title */}
-                <div className="h-4 bg-gray-200 rounded w-3/4 mb-2"></div>
-
-                {/* Description lines */}
-                <div className="h-3 bg-gray-200 rounded w-full mb-1"></div>
-                <div className="h-3 bg-gray-200 rounded w-5/6 mb-3"></div>
-
-                {/* Price + Button */}
-                <div className="mt-auto flex justify-between items-center">
-                  <div className="h-4 bg-gray-200 rounded w-20"></div>
-                  <div className="h-4 bg-gray-200 rounded w-12"></div>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      ) : error ? (
-        <p className="text-center text-red-500">{error}</p>
-      ) : categories.length === 0 ? (
-        <div className="text-center py-12">
-          <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gray-100 mb-4">
-            <Gift className="h-8 w-8 text-gray-400" />
-          </div>
-          <p className="text-gray-500">No categories found.</p>
-        </div>
-      ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
-          {categories.map((cat) => {
-            const staticData = categoryContent[cat.id];
-            const price = staticData ? staticData.price / 100 : "—";
-
-            // ✅ Tags mapping
-            const tagMap = {
-              890: ["Eco", "Premium"],
-              891: ["Premium"],
-              896: ["Eco"],
-              897: ["Premium"],
-            };
-
-            const tags = tagMap[cat.id] || [];
-
-            return (
-              <motion.div
-                key={cat.id}
-                whileHover={{ y: -5 }}
-                transition={{ duration: 0.2 }}
-                className="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 border border-gray-100 cursor-pointer h-[340px] flex flex-col"
-                onClick={() => handleCategoryClick(cat)}
-              >
-                {/* Image Section */}
-                <div className="relative w-full h-[260px] bg-gradient-to-br from-gray-50 to-gray-100 overflow-hidden">
-                  <Image
-                    src={
-                      cat.image
-                        ? `https://marketplace.yuukke.com/assets/uploads/${cat.image}`
-                        : "/gray.jpeg"
-                    }
-                    alt={cat.name}
-                    fill
-                    className="object-cover transition-transform duration-500 hover:scale-105"
-                  />
-
-                  {/* ✅ Tags Overlay */}
-                  {tags.length > 0 && (
-                    <div className="absolute top-2 left-2 flex flex-wrap gap-2">
-                      {tags.map((tag) => (
-                        <span
-                          key={tag}
-                          className={`flex items-center gap-1 text-xs font-medium px-2 py-1 rounded-full shadow-sm border ${
-                            tag === "Eco"
-                              ? "bg-green-50 text-green-700 border-green-200"
-                              : "bg-red-50 text-red-700 border-purple-200"
-                          }`}
-                        >
-                          {tag === "Eco" && <Leaf className="w-3 h-3" />}
-                          {tag === "Premium" && (
-                            <CircleCheck className="w-3 h-3" />
-                          )}
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-                  )}
-                </div>
-
-                {/* Content */}
-                <div className="p-3 flex flex-col flex-1">
-                  <h3 className="text-md font-bold text-gray-900 line-clamp-1 mb-1">
-                    {cat.name}
-                  </h3>
-
-                  <p className="text-xs text-gray-600 line-clamp-2 mb-2">
-                    {cat.description
-                      ? cat.description.includes(".")
-                        ? cat.description.split(".")[0] + "."
-                        : cat.description
-                      : "Discover our exclusive collection of festive hampers."}
-                  </p>
-                  <div className="mt-auto flex justify-between items-center">
-                    <p className="text-md text-gray-900 flex items-center">
-                      From{" "}
-                      <span className="ml-1 text-[#a00300] font-bold">
-                        ₹ {price}
-                      </span>
-                    </p>
-                    <button className="flex items-center text-xs font-medium text-[#a00300] hover:text-red-800 transition-colors">
-                      View
-                      <ArrowRight className="h-4 w-4 ml-1" strokeWidth={2} />
-                    </button>
-                  </div>
-                </div>
-              </motion.div>
-            );
-          })}
-        </div>
-      )}
-
+    <>
       {/* Stats Section */}
-      <div className="mt-16 text-center mb-6">
+      <div className="mt-16 text-center mb-6 font-gift">
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-8 items-center justify-center">
             {[
@@ -276,6 +124,159 @@ export default function CategoryCr() {
           </div>
         </div>
       </div>
-    </div>
+      <div
+        id="featured-products"
+        className="relative px-6 md:px-10 py-2 md:py-12 bg-gradient-to-b from-gray-50 to-white font-gift"
+      >
+        {/* Header */}
+        <motion.div
+          className="text-center mb-12"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          viewport={{ once: true }}
+        >
+          <h2 className="text-4xl sm:text-4xl lg:text-6xl font-bold text-gray-900 mb-3">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#A00030] to-[#000940] capitalize">
+              Featured Gifting Hampers
+            </span>
+          </h2>
+          <p className="text-gray-600 text-sm md:text-lg max-w-2xl mx-auto">
+            Discover our handpicked selection of premium corporate gifts,
+            crafted to make lasting impressions.
+          </p>
+        </motion.div>
+
+        {/* State Handling */}
+        {loading ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
+            {Array.from({ length: 8 }).map((_, i) => (
+              <div
+                key={i}
+                className="bg-white rounded-xl overflow-hidden shadow-md border border-gray-100 h-[340px] flex flex-col animate-pulse"
+              >
+                {/* Image Section Skeleton */}
+                <div className="w-full h-[260px] bg-gray-200"></div>
+
+                {/* Content Skeleton */}
+                <div className="p-3 flex flex-col flex-1">
+                  {/* Title */}
+                  <div className="h-4 bg-gray-200 rounded w-3/4 mb-2"></div>
+
+                  {/* Description lines */}
+                  <div className="h-3 bg-gray-200 rounded w-full mb-1"></div>
+                  <div className="h-3 bg-gray-200 rounded w-5/6 mb-3"></div>
+
+                  {/* Price + Button */}
+                  <div className="mt-auto flex justify-between items-center">
+                    <div className="h-4 bg-gray-200 rounded w-20"></div>
+                    <div className="h-4 bg-gray-200 rounded w-12"></div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : error ? (
+          <p className="text-center text-red-500">{error}</p>
+        ) : categories.length === 0 ? (
+          <div className="text-center py-12">
+            <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gray-100 mb-4">
+              <Gift className="h-8 w-8 text-gray-400" />
+            </div>
+            <p className="text-gray-500">No categories found.</p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
+            {categories.map((cat) => {
+              const staticData = categoryContent[cat.id];
+              const price = staticData ? staticData.price / 100 : "—";
+
+              // ✅ Tags mapping
+              const tagMap = {
+                890: ["Eco", "Premium"],
+                891: ["Premium"],
+                896: ["Eco"],
+                897: ["Premium"],
+              };
+
+              const tags = tagMap[cat.id] || [];
+
+              return (
+                <motion.div
+                  key={cat.id}
+                  whileHover={{ y: -5 }}
+                  transition={{ duration: 0.2 }}
+                  className="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 border border-gray-100 cursor-pointer h-[340px] flex flex-col"
+                  onClick={() => handleCategoryClick(cat)}
+                >
+                  {/* Image Section */}
+                  <div className="relative w-full h-[260px] bg-gradient-to-br from-gray-50 to-gray-100 overflow-hidden">
+                    <Image
+                      src={
+                        cat.image
+                          ? `https://marketplace.yuukke.com/assets/uploads/${cat.image}`
+                          : "/gray.jpeg"
+                      }
+                      alt={cat.name}
+                      fill
+                      className="object-cover transition-transform duration-500 hover:scale-105"
+                    />
+
+                    {/* ✅ Tags Overlay */}
+                    {tags.length > 0 && (
+                      <div className="absolute top-2 left-2 flex flex-wrap gap-2">
+                        {tags.map((tag) => (
+                          <span
+                            key={tag}
+                            className={`flex items-center gap-1 text-xs font-medium px-2 py-1 rounded-full shadow-sm border ${
+                              tag === "Eco"
+                                ? "bg-green-50 text-green-700 border-green-200"
+                                : "bg-red-50 text-red-700 border-purple-200"
+                            }`}
+                          >
+                            {tag === "Eco" && <Leaf className="w-3 h-3" />}
+                            {tag === "Premium" && (
+                              <CircleCheck className="w-3 h-3" />
+                            )}
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Content */}
+                  <div className="p-3 flex flex-col flex-1">
+                    <h3 className="text-md font-bold text-gray-900 line-clamp-1 mb-1">
+                      {cat.name}
+                    </h3>
+
+                    <p className="text-xs text-gray-600 line-clamp-2 mb-2">
+                      {cat.description
+                        ? cat.description.includes(".")
+                          ? cat.description.split(".")[0] + "."
+                          : cat.description
+                        : "Discover our exclusive collection of festive hampers."}
+                    </p>
+                    <div className="mt-auto flex justify-between items-center">
+                      <p className="text-md text-gray-900 flex items-center">
+                        From{" "}
+                        <span className="ml-1 text-[#a00300] font-bold">
+                          ₹ {price}
+                        </span>
+                      </p>
+                      <button className="flex items-center text-xs font-medium text-[#a00300] hover:text-red-800 transition-colors">
+                        View
+                        <ArrowRight className="h-4 w-4 ml-1" strokeWidth={2} />
+                      </button>
+                    </div>
+                  </div>
+                </motion.div>
+              );
+            })}
+          </div>
+        )}
+      </div>
+    </>
   );
 }

@@ -3,11 +3,28 @@ import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import FloatingQueryButton from "./components/FloatingQueryButton";
 import Script from "next/script";
+import { SessionProvider } from "./context/SessionContext";
+import { AuthProvider } from "@/app/utills/AuthContext";
+import { Toaster } from "react-hot-toast";
 
 export const metadata = {
   title: "Premium Festive & Corporate Hampers | Yuukke Gifting",
   description:
     "Celebrate every occasion with Yuukke’s festive & corporate hampers. Unique, handcrafted & thoughtful gifts for Diwali, Christmas, New Year & business gifting. Delight clients, teams & family with curated hampers. Shop online today!",
+  openGraph: {
+    title: "Premium Festive & Corporate Hampers | Yuukke Gifting",
+    description:
+      "Celebrate every occasion with Yuukke’s festive & corporate hampers. Unique, handcrafted & thoughtful gifts for Diwali, Christmas, New Year & business gifting. Delight clients, teams & family with curated hampers. Shop online today!",
+    url: "https://gift.yuukke.com", // ✅ correct domain
+    siteName: "Yuukke Gifting",
+    images: [
+      {
+        url: "https://gift.yuukke.com/logo_for.jpg",
+        alt: "Yuukke Marketplace - Explore Authentic Indian Products",
+      },
+    ],
+    type: "website",
+  },
 };
 
 export default function RootLayout({ children }) {
@@ -50,11 +67,15 @@ export default function RootLayout({ children }) {
             style={{ display: "none", visibility: "hidden" }}
           ></iframe>
         </noscript>
-
-        <Navbar />
-        {children}
-        <FloatingQueryButton />
-        <Footer />
+        <AuthProvider>
+          <SessionProvider>
+            <Navbar />
+            {children}
+            <Toaster position="top-right" reverseOrder={false} />
+            <FloatingQueryButton />
+            <Footer />
+          </SessionProvider>
+        </AuthProvider>
       </body>
     </html>
   );
